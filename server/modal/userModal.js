@@ -90,3 +90,32 @@ exports.userreg = (req, callback) => {
     console.log(err);
   }
 };
+exports.userLogin = (req, callback) => {
+  try {
+    var response = {};
+    registerUser.findOne({ email: req.body.email }, (err, user) => {
+      if (user) {
+        console.log("password", req.body.password);
+        bcrypt.compare(req.body.password, user.password, (err, encrypted) => {
+          console.log(encrypted);
+          if (err) {
+            console.log("err find it out");
+            callback("Password is Incorrect");
+          } else if (encrypted) {
+            response._id = user._id;
+            response.fullName = user.fullName;
+            response.email = req.body.email;
+            callback(null, response);
+          } else {
+            callback("Password is Incorrect");
+          }
+        });
+      } else {
+        callback("User Not Found");
+        console.log("User Not Found");
+      }
+    });
+  } catch (err) {
+    console.log("err in userlogin", err);
+  }
+};
