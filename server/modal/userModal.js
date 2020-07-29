@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const emailExistance = require("email-existence");
 const bcrypt = require("bcryptjs");
+var ObjectID = require("mongodb").ObjectID;
 //schema for registration of new user
 const registration = mongoose.Schema(
   {
@@ -32,6 +33,11 @@ const registration = mongoose.Schema(
 var registerUser = mongoose.model("register", registration);
 exports.registerUser;
 
+// class Userbookstore {
+//   dummyfunction(){
+
+//   }
+// }
 exports.userreg = (req, callback) => {
   try {
     console.log("In model", req.body.email);
@@ -119,3 +125,47 @@ exports.userLogin = (req, callback) => {
     console.log("err in userlogin", err);
   }
 };
+exports.forgotPassword = (req, callback) => {
+  //finding the email is persent or not
+  console.log("forgot password", req.body.email);
+  registerUser.findOne(
+    {
+      email: req.body.email,
+    },
+    (err, data) => {
+      if (data) {
+        callback(null, data);
+      } else {
+        callback("invalid user email ");
+      }
+    }
+  );
+};
+exports.resetPassword = (req, callback) => {
+  console.log(req.body);
+  bcrypt.hash(req.body.password, 7, (err, encrypted) => {
+    if (err) {
+      callback(err);
+    } else {
+      registerUser.updateOne(
+        {
+          _id: req.decoded.data_id,
+        },
+        {
+          password: encrypted,
+        },
+        (err, data) => {
+          if (err) {
+            callback(err);
+          } else {
+            console.log("password", ObjectID(req.body._id));
+            callback(null, data);
+          }
+        }
+      );
+    }
+  });
+};
+
+// var bookStoreUser = new Userbookstore();
+// module.exports = { bookStoreUser };

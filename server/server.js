@@ -5,6 +5,7 @@ const bodyparser = require("body-parser");
 const expressvalidator = require("express-validator");
 const app = express();
 const routes = require("./route/routes.js");
+require("dotenv").config();
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
 app.use(expressvalidator());
