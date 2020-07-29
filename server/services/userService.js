@@ -1,8 +1,9 @@
 const model = require("../modal/userModal.js");
+var bookstoreModel = new model();
 exports.register = (req, callback) => {
   try {
     console.log(" In service :", req.body);
-    model.userreg(req, (err, data) => {
+    bookstoreModel.userreg(req, (err, data) => {
       if (err) {
         callback(err);
       } else {
@@ -17,7 +18,7 @@ exports.register = (req, callback) => {
 exports.loginUser = (req, callback) => {
   try {
     console.log(" In service :", req.body);
-    model.userLogin(req, (err, data) => {
+    bookstoreModel.userLogin(req, (err, data) => {
       if (err) {
         callback(err);
       } else {
@@ -32,7 +33,7 @@ exports.loginUser = (req, callback) => {
 exports.forgotPassword = (req, callback) => {
   try {
     console.log(" In service forgotpassword :", req.body);
-    model.forgotPassword(req, (err, data) => {
+    bookstoreModel.forgotPassword(req, (err, data) => {
       if (err) {
         //if error callback function is called and passing the error
         callback(err);
@@ -49,7 +50,7 @@ exports.forgotPassword = (req, callback) => {
 exports.resetPassword = (req, callback) => {
   try {
     console.log(" In service forgotpassword :", req.body);
-    model.resetPassword(req, (err, data) => {
+    bookstoreModel.resetPassword(req, (err, data) => {
       if (err) {
         //if error callback function is called and passing the error
         callback(err);
