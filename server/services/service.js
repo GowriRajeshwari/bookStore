@@ -1,10 +1,9 @@
-const model = require("../modal/modal.js");
+const model = require("../model/model.js");
 const emailExistance = require("email-existence");
 const bcrypt = require("bcryptjs");
 var bookstoreModel = new model();
 exports.register = (req, callback) => {
   try {
-    console.log(" In service :", req.body);
     emailExistance.check(req.body.email, (err, response) => {
       if (response) {
         bookstoreModel.find({ email: req.body.email }, (err, user) => {
@@ -44,7 +43,7 @@ exports.register = (req, callback) => {
           }
         });
       } else {
-        callback(err);
+        callback("Email Id not Exists");
       }
     });
   } catch (err) {
@@ -57,14 +56,14 @@ exports.loginUser = (req, callback) => {
     var response = {};
     bookstoreModel.find({ email: req.body.email }, (err, user) => {
       if (user) {
-        console.log("password", req.body.password);
         bcrypt.compare(req.body.password, user.password, (err, encrypted) => {
           if (err) {
-            callback("Password is Incorrect");
+            callback(err);
           } else if (encrypted) {
             response._id = user._id;
             response.fullName = user.fullName;
-            response.email = req.body.email;
+            response.email = user.email;
+            response.rollFiled = user.rollField;
             callback(null, response);
           } else {
             callback("Password is Incorrect");

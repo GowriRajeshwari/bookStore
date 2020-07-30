@@ -27,11 +27,10 @@ exports.registerUser = (req, res) => {
         console.log(err);
         response.success = false;
         response.message = err;
-        res.status(500).send({ data: response });
+        res.status(404).send({ data: response });
       } else {
         response.success = true;
         response.data = data;
-        console.log(response);
         response.message = "Register Successfully";
         res.status(200).send({ data: response });
       }

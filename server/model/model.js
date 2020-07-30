@@ -34,18 +34,13 @@ exports.registerUser;
 
 module.exports = class Userbookstore {
   find(req, callback) {
-    try {
-      console.log("find", req.email);
-      registerUser.findOne({ email: req.email }, (err, user) => {
-        if (err) {
-          callback(err);
-        } else {
-          return callback(null, user);
-        }
-      });
-    } catch (err) {
-      return callback("Email Id is not valid check with email is exist or not");
-    }
+    registerUser.findOne(req, (err, data) => {
+      if (err) {
+        callback(err);
+      } else {
+        return callback(null, data);
+      }
+    });
   }
   create(req, callback) {
     try {
