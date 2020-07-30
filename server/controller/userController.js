@@ -72,13 +72,9 @@ exports.loginUser = (req, res) => {
 //forgot Password
 exports.forgotPassword = (req, res) => {
   console.log(req.body);
-  //checking email is valid or not
   req.checkBody("email", "Email is invalid").notEmpty().isEmail();
-
   var response = {};
-  //checking for the Input Validation
   const errors = req.validationErrors();
-  //if Validation gets error send response to the user
   if (errors) {
     response.success = false;
     response.message = "Invalid Input";
