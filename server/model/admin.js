@@ -33,21 +33,23 @@ var bookStoreModel = mongoose.model("book", bookService);
 exports.bookStoreModel;
 
 module.exports = class model {
-  create(req, callback) {
+  create(req) {
     try {
+      console.log("outside promises", req);
+      let bookAdd = new bookStoreModel(req);
       return new Promise((reslove, reject) => {
-        let bookAdd = new bookStoreModel(req);
         bookAdd
           .save()
-          .then((result) => {
-            reslove({ data: result });
+          .then((data) => {
+            console.log("inside promise", data);
+            reslove(data);
           })
           .catch((err) => {
             reject({ error: err });
           });
       });
     } catch (err) {
-      return callback(err);
+      console.log(err);
     }
   }
 };
