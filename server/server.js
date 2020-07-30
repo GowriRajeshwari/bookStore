@@ -8,6 +8,8 @@ const routes = require("./route/routes.js");
 require("dotenv").config();
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(expressvalidator());
 app.use("/", routes);
 mongoose.Promise = global.Promise;

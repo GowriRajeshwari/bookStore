@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 //schema for registration of new user
-const bookStore = mongoose.Schema(
+const bookService = mongoose.Schema(
   {
     title: {
       type: String,
@@ -29,10 +29,10 @@ const bookStore = mongoose.Schema(
   }
 );
 
-var bookStoreModel = mongoose.model("register", bookStore);
+var bookStoreModel = mongoose.model("book", bookService);
 exports.bookStoreModel;
 
-modeule.exports = class model {
+module.exports = class model {
   create(req, callback) {
     try {
       return new Promise((reslove, reject) => {
