@@ -1,4 +1,4 @@
-const model = require("../modal/userModal.js");
+const model = require("../modal/modal.js");
 const emailExistance = require("email-existence");
 const bcrypt = require("bcryptjs");
 var bookstoreModel = new model();
@@ -7,16 +7,16 @@ exports.register = (req, callback) => {
     console.log(" In service :", req.body);
     emailExistance.check(req.body.email, (err, response) => {
       if (response) {
-        //finding the user is already existing or not
         bookstoreModel.find({ email: req.body.email }, (err, user) => {
           if (err) {
             callback(err);
           }
           if (user) {
-            var err = new Error(
-              "A user with that email has already registered. Please use a different email.."
-            );
-            callback("Existing User");
+            callback({
+              message: "Existing User",
+              error:
+                "A user with that email has already registered. Please use a different email..",
+            });
           } else {
             console.log("password", req.body.password);
             bcrypt.hash(req.body.password, 7, (err, encrypted) => {
@@ -49,5 +49,32 @@ exports.register = (req, callback) => {
     });
   } catch (err) {
     console.log(err);
+  }
+};
+exports.loginUser = (req, callback) => {
+  try {
+    console.log(" In service :", req.body);
+    var response = {};
+    bookstoreModel.find({ email: req.body.email }, (err, user) => {
+      if (user) {
+        console.log("password", req.body.password);
+        bcrypt.compare(req.body.password, user.password, (err, encrypted) => {
+          if (err) {
+            callback("Password is Incorrect");
+          } else if (encrypted) {
+            response._id = user._id;
+            response.fullName = user.fullName;
+            response.email = req.body.email;
+            callback(null, response);
+          } else {
+            callback("Password is Incorrect");
+          }
+        });
+      } else {
+        callback({ message: "User Not Found", error: err });
+      }
+    });
+  } catch (err) {
+    callback(err);
   }
 };
