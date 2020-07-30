@@ -78,6 +78,7 @@ exports.loginUser = (req, callback) => {
     callback(err);
   }
 };
+
 exports.forgotPassword = (req, callback) => {
   try {
     console.log(" In service forgotpassword :", req.body);
