@@ -78,3 +78,22 @@ exports.loginUser = (req, callback) => {
     callback(err);
   }
 };
+exports.forgotPassword = (req, callback) => {
+  try {
+    console.log(" In service forgotpassword :", req.body);
+    bookstoreModel.find(
+      {
+        email: req.body.email,
+      },
+      (err, data) => {
+        if (err) {
+          callback(err);
+        } else {
+          callback(null, data);
+        }
+      }
+    );
+  } catch (err) {
+    console.log(err);
+  }
+};
