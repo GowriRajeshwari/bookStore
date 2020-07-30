@@ -1,8 +1,7 @@
-const userService = require("../services/service.js");
+const userService = require("../services/user.js");
 const jwt = require("../middleware/jwt.js");
 const mailler = require("../middleware/nodeMailer.js");
 exports.registerUser = (req, res) => {
-  console.log(req.body);
   req
     .checkBody("fullName", "Name is invalid")
     .len({ min: 3 })
@@ -18,7 +17,7 @@ exports.registerUser = (req, res) => {
     response.success = false;
     let data = { message: "Invalid Input" };
     response.data = data;
-    res.status(500).send(response);
+    res.status(422).send(response);
     console.log("error in registration invalid input", errors);
   } else {
     console.log(req.body);

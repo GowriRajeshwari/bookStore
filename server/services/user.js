@@ -1,12 +1,12 @@
-const model = require("../model/model.js");
+const model = require("../model/user.js");
 const emailExistance = require("email-existence");
 const bcrypt = require("bcryptjs");
-var bookstoreModel = new model();
+var Model = new model();
 exports.register = (req, callback) => {
   try {
     emailExistance.check(req.body.email, (err, response) => {
       if (response) {
-        bookstoreModel.find({ email: req.body.email }, (err, user) => {
+        Model.find({ email: req.body.email }, (err, user) => {
           if (err) {
             callback(err);
           }
@@ -17,12 +17,11 @@ exports.register = (req, callback) => {
                 "A user with that email has already registered. Please use a different email..",
             });
           } else {
-            console.log("password", req.body.password);
             bcrypt.hash(req.body.password, 7, (err, encrypted) => {
               if (err) {
                 callback("Error found while Encrypting");
               } else {
-                bookstoreModel.create(
+                Model.create(
                   {
                     fullName: req.body.fullName,
                     password: encrypted,
@@ -46,15 +45,12 @@ exports.register = (req, callback) => {
         callback("Email Id not Exists");
       }
     });
-  } catch (err) {
-    console.log(err);
-  }
+  } catch (err) {}
 };
 exports.loginUser = (req, callback) => {
   try {
-    console.log(" In service :", req.body);
     var response = {};
-    bookstoreModel.find({ email: req.body.email }, (err, user) => {
+    Model.find({ email: req.body.email }, (err, user) => {
       if (user) {
         bcrypt.compare(req.body.password, user.password, (err, encrypted) => {
           if (err) {
@@ -79,8 +75,7 @@ exports.loginUser = (req, callback) => {
 };
 exports.forgotPassword = (req, callback) => {
   try {
-    console.log(" In service forgotpassword :", req.body);
-    bookstoreModel.find(
+    Model.find(
       {
         email: req.body.email,
       },
@@ -93,17 +88,16 @@ exports.forgotPassword = (req, callback) => {
       }
     );
   } catch (err) {
-    console.log(err);
+    callback(err);
   }
 };
 exports.resetPassword = (req, callback) => {
   try {
-    console.log(" In service forgotpassword :", req.body);
     bcrypt.hash(req.body.password, 7, (err, encrypted) => {
       if (err) {
         callback(err);
       } else {
-        bookstoreModel.updateOne(
+        Model.updateOne(
           req,
           {
             password: encrypted,
@@ -120,6 +114,5 @@ exports.resetPassword = (req, callback) => {
     });
   } catch (err) {
     callback(err);
-    console.log(err);
   }
 };

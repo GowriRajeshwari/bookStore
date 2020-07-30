@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 var ObjectID = require("mongodb").ObjectID;
-
-//schema for registration of new user
 const registration = mongoose.Schema(
   {
     fullName: {
@@ -44,7 +42,6 @@ module.exports = class Userbookstore {
   }
   create(req, callback) {
     try {
-      console.log(req);
       var register = registerUser(req);
       register.save((err, data) => {
         if (err) {
@@ -67,7 +64,6 @@ module.exports = class Userbookstore {
         if (err) {
           return callback(err);
         } else {
-          console.log("password", ObjectID(req.body._id));
           return callback(null, data);
         }
       }
