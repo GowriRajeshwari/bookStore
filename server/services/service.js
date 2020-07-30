@@ -97,3 +97,30 @@ exports.forgotPassword = (req, callback) => {
     console.log(err);
   }
 };
+exports.resetPassword = (req, callback) => {
+  try {
+    console.log(" In service forgotpassword :", req.body);
+    bcrypt.hash(req.body.password, 7, (err, encrypted) => {
+      if (err) {
+        callback(err);
+      } else {
+        bookstoreModel.updateOne(
+          req,
+          {
+            password: encrypted,
+          },
+          (err, data) => {
+            if (err) {
+              callback(err);
+            } else {
+              callback(null, data);
+            }
+          }
+        );
+      }
+    });
+  } catch (err) {
+    callback(err);
+    console.log(err);
+  }
+};

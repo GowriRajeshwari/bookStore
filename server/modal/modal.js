@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+var ObjectID = require("mongodb").ObjectID;
+
 //schema for registration of new user
 const registration = mongoose.Schema(
   {
@@ -59,5 +61,21 @@ module.exports = class Userbookstore {
     } catch (err) {
       return callback(err);
     }
+  }
+  updateOne(req, encrypted, callback) {
+    registerUser.updateOne(
+      {
+        _id: req.decoded.data_id,
+      },
+      encrypted,
+      (err, data) => {
+        if (err) {
+          return callback(err);
+        } else {
+          console.log("password", ObjectID(req.body._id));
+          return callback(null, data);
+        }
+      }
+    );
   }
 };
