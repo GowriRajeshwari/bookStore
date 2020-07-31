@@ -12,7 +12,21 @@ exports.addBook = (req) => {
         genre: req.body.genre,
       })
       .then((data) => {
-        console.log("inside service", data);
+        reslove(data);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+exports.getAllBook = (req) => {
+  let findQuery = {
+    find: req.find,
+  };
+  return new Promise((reslove, reject) => {
+    bookstoreModel
+      .find(findQuery)
+      .then((data) => {
         reslove(data);
       })
       .catch((err) => {

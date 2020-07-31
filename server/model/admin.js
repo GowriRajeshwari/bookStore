@@ -35,14 +35,32 @@ exports.bookStoreModel;
 module.exports = class model {
   create(req) {
     try {
-      console.log("outside promises", req);
       let bookAdd = new bookStoreModel(req);
       return new Promise((reslove, reject) => {
         bookAdd
           .save()
           .then((data) => {
-            console.log("inside promise", data);
             reslove(data);
+          })
+          .catch((err) => {
+            reject({ error: err });
+          });
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  find(req) {
+    try {
+      let bookAdd = new bookStoreModel(req);
+      return new Promise((reslove, reject) => {
+        bookStoreModel
+          .find(req.find)
+          .then((data) => {
+            if (data.length == 0) {
+              reslove({ message: "Book Not found", data: data });
+            }
+            reslove({ message: "Book found", data: data });
           })
           .catch((err) => {
             reject({ error: err });

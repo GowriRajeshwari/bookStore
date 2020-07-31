@@ -36,3 +36,24 @@ exports.addBook = (req, res) => {
       });
   }
 };
+exports.getAllBook = (req, res) => {
+  let find = {};
+  let response = {};
+  let getBooks = {
+    find,
+  };
+  adminService
+    .getAllBook(getBooks)
+    .then((data) => {
+      response.success = true;
+      response.data = data;
+      console.log(response);
+      response.message = "Retrieve Data Successfully";
+      res.status(200).send({ data: response });
+    })
+    .catch((err) => {
+      response.success = false;
+      response.message = err;
+      res.status(500).send({ data: response });
+    });
+};
