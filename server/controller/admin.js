@@ -1,6 +1,5 @@
 const adminService = require("../services/admin.js");
 exports.addBook = (req, res) => {
-  console.log("req body before validate", req.body);
   req
     .checkBody("title", "BookName is invalid")
     .len({ min: 3 })
@@ -16,8 +15,7 @@ exports.addBook = (req, res) => {
     response.success = false;
     let data = { message: "Invalid Input" };
     response.data = data;
-    res.status(500).send(response);
-    console.log("error in Adding books invalid input", errors);
+    res.status(422).send(response);
   } else {
     console.log(req.body);
     adminService
@@ -56,4 +54,38 @@ exports.getAllBook = (req, res) => {
       response.message = err;
       res.status(500).send({ data: response });
     });
+};
+exports.updateBook = (req, res) => {
+  req
+    .checkBody("title", "BookName is invalid")
+    .len({ min: 3 })
+    .isAlpha()
+    .notEmpty();
+  req.checkBody("description", "description is invalid").notEmpty();
+  req.checkBody("quantity", "quantity is invalid").notEmpty();
+  req.checkBody("author", "author is invalid").notEmpty().isAlpha();
+  req.checkBody("genre", "genre is invalid").notEmpty();
+  var response = {};
+  const errors = req.validationErrors();
+  if (errors) {
+    response.success = false;
+    let data = { message: "Invalid Input" };
+    response.data = data;
+    res.status(422).send(response);
+  } else {
+    adminService
+      .updateBook(req.params._id, req.body)
+      .then((data) => {
+        response.success = true;
+        response.data = data;
+        response.message = "Book Update Successfully";
+        res.status(200).send({ data: response });
+      })
+      .catch((err) => {
+        console.log(err);
+        response.success = false;
+        response.message = err;
+        res.status(404).send({ data: response });
+      });
+  }
 };

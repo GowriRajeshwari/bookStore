@@ -52,15 +52,31 @@ module.exports = class model {
   }
   find(req) {
     try {
-      let bookAdd = new bookStoreModel(req);
       return new Promise((reslove, reject) => {
         bookStoreModel
           .find(req.find)
           .then((data) => {
             if (data.length == 0) {
               reslove({ message: "Book Not found", data: data });
+            } else {
+              reslove({ message: "Book found", data: data });
             }
-            reslove({ message: "Book found", data: data });
+          })
+          .catch((err) => {
+            reject({ error: err });
+          });
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  findbyIdandUpdate(_id, req) {
+    try {
+      return new Promise((reslove, reject) => {
+        bookStoreModel
+          .findByIdAndUpdate(_id, req, { useFindAndModify: false })
+          .then((data) => {
+            reslove(data);
           })
           .catch((err) => {
             reject({ error: err });
