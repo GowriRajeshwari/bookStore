@@ -10,23 +10,29 @@ exports.registerUser = (req, res) => {
   req.checkBody("password", "Password is invalid").notEmpty();
   req.checkBody("email", "Email is invalid").notEmpty().isEmail();
   req.checkBody("country", "Country is invalid").notEmpty().isAlpha();
-  req.checkBody("rollField", "RollField is invalid").notEmpty().isAlpha();
+  req.checkBody("role", "RollField is invalid").notEmpty().isAlpha();
   var response = {};
   const errors = req.validationErrors();
   if (errors) {
     response.success = false;
-    let data = { message: "Invalid Input" };
-    response.data = data;
-    res.status(422).send(response);
+    response.message = { message: "Invalid Input" };
+    response.error = errors;
+    res.status(422).send({ data: response });
   } else {
-    userService.register(req, (err, data) => {
+    let filterData = {
+      fullName: req.body.fullName,
+      password: req.body.password,
+      email: req.body.email,
+      country: req.body.country,
+      role: req.body.role,
+    };
+    userService.register(filterData, (err, data) => {
       if (err) {
         response.success = false;
         response.message = err;
         res.status(404).send({ data: response });
       } else {
         response.success = true;
-        response.data = data;
         response.message = "Register Successfully";
         res.status(200).send({ data: response });
       }
@@ -40,10 +46,15 @@ exports.loginUser = (req, res) => {
   const errors = req.validationErrors();
   if (errors) {
     response.success = false;
-    response.message = "Invalid Input";
-    res.status(422).send(response);
+    response.message = { message: "Invalid Input" };
+    response.error = errors;
+    res.status(422).send({ data: response });
   } else {
-    userService.loginUser(req, (err, data) => {
+    let filterData = {
+      email: req.body.email,
+      password: req.body.password,
+    };
+    userService.loginUser(filterData, (err, data) => {
       if (err) {
         response.success = false;
         response.message = err;
@@ -64,10 +75,14 @@ exports.forgotPassword = (req, res) => {
   const errors = req.validationErrors();
   if (errors) {
     response.success = false;
-    response.message = "Invalid Input";
-    res.status(422).send(response);
+    response.message = { message: "Invalid Input" };
+    response.error = errors;
+    res.status(422).send({ data: response });
   } else {
-    userService.forgotPassword(req, (err, data) => {
+    let filterData = {
+      email: req.body.email,
+    };
+    userService.forgotPassword(filterData, (err, data) => {
       if (err) {
         response.success = false;
         response.message = err;
@@ -79,7 +94,6 @@ exports.forgotPassword = (req, res) => {
         mailler.sendMailer(url, req.body.email);
         response.token = obj.token;
         response.success = true;
-        response.data = data;
         response.message = "Send Mail Successfully";
         res.status(200).send({ data: response });
       }
@@ -97,7 +111,8 @@ exports.resetPassword = (req, res) => {
   }
   if (error) {
     response.success = false;
-    response.message = err;
+    response.message = { message: "Invalid Input" };
+    response.error = errors;
     res.status(422).send({ data: response });
   } else {
     userService.resetPassword(req, (err, data) => {

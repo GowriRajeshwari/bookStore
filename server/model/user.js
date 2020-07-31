@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-var ObjectID = require("mongodb").ObjectID;
 const registration = mongoose.Schema(
   {
     fullName: {
@@ -18,9 +17,9 @@ const registration = mongoose.Schema(
       type: String,
       required: [true, "country cannot be left blank"],
     },
-    rollField: {
+    role: {
       type: String,
-      required: [true, "rollField cannot be left blank"],
+      required: [true, "role cannot be left blank"],
     },
   },
   {
