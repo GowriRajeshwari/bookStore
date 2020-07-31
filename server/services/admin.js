@@ -37,7 +37,19 @@ exports.getAllBook = (req) => {
 exports.updateBook = (_id, req) => {
   return new Promise((reslove, reject) => {
     bookstoreModel
-      .findbyIdandUpdate(_id, req)
+      .update(_id, req)
+      .then((data) => {
+        reslove(data);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+exports.deleteBook = (_id) => {
+  return new Promise((reslove, reject) => {
+    bookstoreModel
+      .delete(_id)
       .then((data) => {
         reslove(data);
       })

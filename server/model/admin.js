@@ -70,11 +70,27 @@ module.exports = class model {
       console.log(err);
     }
   }
-  findbyIdandUpdate(_id, req) {
+  update(_id, req) {
     try {
       return new Promise((reslove, reject) => {
         bookStoreModel
           .findByIdAndUpdate(_id, req, { useFindAndModify: false })
+          .then((data) => {
+            reslove(data);
+          })
+          .catch((err) => {
+            reject({ error: err });
+          });
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  delete(_id) {
+    try {
+      return new Promise((reslove, reject) => {
+        bookStoreModel
+          .findByIdAndRemove(_id, { useFindAndModify: false })
           .then((data) => {
             reslove(data);
           })

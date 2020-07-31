@@ -89,3 +89,20 @@ exports.updateBook = (req, res) => {
       });
   }
 };
+exports.deleteBook = (req, res) => {
+  var response = {};
+  adminService
+    .deleteBook(req.params._id)
+    .then((data) => {
+      response.success = true;
+      response.data = data;
+      console.log(response);
+      response.message = "Delete Data Successfully";
+      res.status(200).send({ data: response });
+    })
+    .catch((err) => {
+      response.success = false;
+      response.message = err;
+      res.status(500).send({ data: response });
+    });
+};
