@@ -41,7 +41,7 @@ exports.loginUser = (req, res) => {
   if (errors) {
     response.success = false;
     response.message = "Invalid Input";
-    res.status(500).send(response);
+    res.status(422).send(response);
   } else {
     userService.loginUser(req, (err, data) => {
       if (err) {
@@ -65,7 +65,7 @@ exports.forgotPassword = (req, res) => {
   if (errors) {
     response.success = false;
     response.message = "Invalid Input";
-    res.status(500).send(response);
+    res.status(422).send(response);
   } else {
     userService.forgotPassword(req, (err, data) => {
       if (err) {
@@ -98,7 +98,7 @@ exports.resetPassword = (req, res) => {
   if (error) {
     response.success = false;
     response.message = err;
-    res.status(500).send({ data: response });
+    res.status(422).send({ data: response });
   } else {
     userService.resetPassword(req, (err, data) => {
       if (err) {

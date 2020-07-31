@@ -30,7 +30,7 @@ const registration = mongoose.Schema(
 const registerUser = mongoose.model("register", registration);
 exports.registerUser;
 
-module.exports = class Userbookstore {
+module.exports = class userService {
   find(req, callback) {
     registerUser.findOne(req, (err, data) => {
       if (err) {
