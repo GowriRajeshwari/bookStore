@@ -1,15 +1,12 @@
 const jwt = require("jsonwebtoken");
 
 const auth = (req, res, next) => {
-  console.log(req.body);
   const token = req.header("Authorization").replace("Bearer ", "");
-  console.log("token", token);
   jwt.verify(token, process.env.KEY, (err, result) => {
     if (err) {
       res.status(422).send(err);
     } else {
       req.decoded = result;
-      console.log("result", result);
       next();
     }
   });

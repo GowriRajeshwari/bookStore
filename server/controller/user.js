@@ -106,14 +106,17 @@ exports.resetPassword = (req, res) => {
   req.checkBody("confirmPassword", "ConfirmPassword is invalid").notEmpty();
   var response = {};
   const error = req.validationErrors();
-  if (req.body.password != req.body.confirmPassword) {
-    res.send("Password and confirm password is not correct");
-  }
   if (error) {
     response.success = false;
     response.message = { message: "Invalid Input" };
-    response.error = errors;
+    response.error = error;
     res.status(422).send({ data: response });
+  } else if (req.body.password != req.body.confirmPassword) {
+    response.success = false;
+    response.message = {
+      message: "Password and confirm password is not correct",
+    };
+    res.status(404).send({ data: response });
   } else {
     userService.resetPassword(req, (err, data) => {
       if (err) {
