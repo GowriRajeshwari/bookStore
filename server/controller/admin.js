@@ -30,7 +30,7 @@ exports.addBook = (req, res) => {
         console.log(err);
         response.success = false;
         response.message = err;
-        res.status(404).send({ data: response });
+        res.status(500).send({ data: response });
       });
   }
 };
@@ -76,16 +76,27 @@ exports.updateBook = (req, res) => {
     adminService
       .updateBook(req.params._id, req.body)
       .then((data) => {
-        response.success = true;
-        response.data = data;
-        response.message = "Book Update Successfully";
-        res.status(200).send({ data: response });
+        if (!data) {
+          response.success = false;
+          response.message = "Note not found with id " + req.params._id;
+          res.status(404).send({ data: response });
+        } else {
+          response.success = true;
+          response.data = data;
+          response.message = "Book Update Successfully";
+          res.status(200).send({ data: response });
+        }
       })
       .catch((err) => {
-        console.log(err);
-        response.success = false;
-        response.message = err;
-        res.status(404).send({ data: response });
+        if (err.kind === "ObjectId") {
+          response.success = false;
+          response.message = "Note not found with id " + req.params._id;
+          res.status(404).send({ data: response });
+        } else {
+          response.success = false;
+          response.message = err;
+          res.status(500).send({ data: response });
+        }
       });
   }
 };
@@ -94,15 +105,27 @@ exports.deleteBook = (req, res) => {
   adminService
     .deleteBook(req.params._id)
     .then((data) => {
-      response.success = true;
-      response.data = data;
-      console.log(response);
-      response.message = "Delete Data Successfully";
-      res.status(200).send({ data: response });
+      if (!data) {
+        response.success = false;
+        response.message = "Note not found with id " + req.params._id;
+        res.status(404).send({ data: response });
+      } else {
+        response.success = true;
+        response.data = data;
+        console.log(response);
+        response.message = "Delete Data Successfully";
+        res.status(200).send({ data: response });
+      }
     })
     .catch((err) => {
-      response.success = false;
-      response.message = err;
-      res.status(500).send({ data: response });
+      if (err.kind === "ObjectId") {
+        response.success = false;
+        response.message = "Note not found with id " + req.params._id;
+        res.status(404).send({ data: response });
+      } else {
+        response.success = false;
+        response.message = err;
+        res.status(500).send({ data: response });
+      }
     });
 };

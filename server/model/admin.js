@@ -79,7 +79,7 @@ module.exports = class model {
             reslove(data);
           })
           .catch((err) => {
-            reject({ error: err });
+            reject(err);
           });
       });
     } catch (err) {
@@ -95,7 +95,7 @@ module.exports = class model {
             reslove(data);
           })
           .catch((err) => {
-            reject({ error: err });
+            reject(err);
           });
       });
     } catch (err) {
