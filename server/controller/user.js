@@ -1,4 +1,5 @@
-const userService = require("../services/user.js");
+const Service = require("../services/user.js");
+var userService = new Service();
 const jwt = require("../middleware/jwt.js");
 const mailler = require("../middleware/nodeMailer.js");
 exports.registerUser = (req, res) => {
