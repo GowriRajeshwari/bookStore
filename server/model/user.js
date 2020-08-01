@@ -19,6 +19,8 @@ const registration = mongoose.Schema(
     },
     role: {
       type: String,
+      enum: ["user", "admin"],
+      default: "user",
       required: [true, "role cannot be left blank"],
     },
   },
@@ -33,7 +35,7 @@ module.exports = class userService {
   find(req, callback) {
     registerUser.findOne(req, (err, data) => {
       if (err) {
-        callback(err);
+        return callback(err);
       } else {
         return callback(null, data);
       }

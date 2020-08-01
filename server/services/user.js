@@ -1,7 +1,10 @@
 const model = require("../model/user.js");
 const emailExistance = require("email-existence");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
 var userModel = new model();
+
 exports.register = (req, callback) => {
   try {
     emailExistance.check(req.email, (err, response) => {
@@ -65,10 +68,15 @@ exports.loginUser = (req, callback) => {
           if (err) {
             return callback(err, null);
           } else if (encrypted) {
+            const token = jwt.sign(
+              { sub: user._id, role: user.role },
+              process.env.KEY
+            );
             response._id = user._id;
             response.fullName = user.fullName;
             response.email = user.email;
             response.role = user.role;
+            response.token = token;
             return callback(null, response);
           } else {
             return callback("Password is Incorrect");
