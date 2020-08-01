@@ -36,30 +36,30 @@ module.exports = class model {
   create(req) {
     try {
       let bookAdd = new bookStoreModel(req);
-      return new Promise((reslove, reject) => {
+      return new Promise((resolve, reject) => {
         bookAdd
           .save()
           .then((data) => {
-            reslove(data);
+            resolve(data);
           })
           .catch((err) => {
             reject({ error: err });
           });
       });
     } catch (err) {
-      console.log(err);
+      return err;
     }
   }
   find(req) {
     try {
-      return new Promise((reslove, reject) => {
+      return new Promise((resolve, reject) => {
         bookStoreModel
           .find(req.find)
           .then((data) => {
             if (data.length == 0) {
-              reslove({ message: "Book Not found", data: data });
+              resolve({ message: "Book Not found", data: data });
             } else {
-              reslove({ message: "Book found", data: data });
+              resolve({ message: "Book found", data: data });
             }
           })
           .catch((err) => {
@@ -67,39 +67,39 @@ module.exports = class model {
           });
       });
     } catch (err) {
-      console.log(err);
+      return err;
     }
   }
   update(_id, req) {
     try {
-      return new Promise((reslove, reject) => {
+      return new Promise((resolve, reject) => {
         bookStoreModel
           .findByIdAndUpdate(_id, req, { useFindAndModify: false })
           .then((data) => {
-            reslove(data);
+            resolve(data);
           })
           .catch((err) => {
             reject(err);
           });
       });
     } catch (err) {
-      console.log(err);
+      return err;
     }
   }
   delete(_id) {
     try {
-      return new Promise((reslove, reject) => {
+      return new Promise((resolve, reject) => {
         bookStoreModel
           .findByIdAndRemove(_id, { useFindAndModify: false })
           .then((data) => {
-            reslove(data);
+            resolve(data);
           })
           .catch((err) => {
             reject(err);
           });
       });
     } catch (err) {
-      console.log(err);
+      return err;
     }
   }
 };

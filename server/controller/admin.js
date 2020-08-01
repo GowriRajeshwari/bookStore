@@ -13,16 +13,21 @@ exports.addBook = (req, res) => {
   const errors = req.validationErrors();
   if (errors) {
     response.success = false;
-    let data = { message: "Invalid Input" };
-    response.data = data;
+    response.message = { message: "Invalid Input" };
+    response.error = errors;
     res.status(422).send(response);
   } else {
-    console.log(req.body);
+    let filterData = {
+      title: req.body.title,
+      description: req.body.description,
+      quantity: req.body.quantity,
+      author: req.body.author,
+      genre: req.body.genre,
+    };
     adminService
-      .addBook(req)
+      .addBook(filterData)
       .then((data) => {
         response.success = true;
-        response.data = data;
         response.message = "Book added Successfully";
         res.status(200).send({ data: response });
       })
@@ -45,13 +50,12 @@ exports.getAllBook = (req, res) => {
     .then((data) => {
       response.success = true;
       response.data = data;
-      console.log(response);
       response.message = "Retrieve Data Successfully";
       res.status(200).send({ data: response });
     })
     .catch((err) => {
       response.success = false;
-      response.message = err;
+      response.error = err;
       res.status(500).send({ data: response });
     });
 };
@@ -69,8 +73,8 @@ exports.updateBook = (req, res) => {
   const errors = req.validationErrors();
   if (errors) {
     response.success = false;
-    let data = { message: "Invalid Input" };
-    response.data = data;
+    response.message = { message: "Invalid Input" };
+    response.error = errors;
     res.status(422).send(response);
   } else {
     adminService
@@ -82,7 +86,6 @@ exports.updateBook = (req, res) => {
           res.status(404).send({ data: response });
         } else {
           response.success = true;
-          response.data = data;
           response.message = "Book Update Successfully";
           res.status(200).send({ data: response });
         }
@@ -112,7 +115,6 @@ exports.deleteBook = (req, res) => {
       } else {
         response.success = true;
         response.data = data;
-        console.log(response);
         response.message = "Delete Data Successfully";
         res.status(200).send({ data: response });
       }
