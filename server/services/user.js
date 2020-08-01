@@ -8,7 +8,6 @@ var userModel = new model();
 exports.register = (req, callback) => {
   try {
     emailExistance.check(req.email, (err, response) => {
-      console.log(response);
       if (response) {
         let email = {
           email: req.email,
