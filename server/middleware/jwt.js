@@ -1,29 +1,28 @@
-const jwt = require("jsonwebtoken");
+const jwt = require("express-jwt");
+require("dotenv").config();
+const secret = process.env.KEY;
+module.exports = authorize;
 
-const auth = (req, res, next) => {
-  console.log(req.body);
-  const token = req.header("Authorization").replace("Bearer ", "");
-  console.log("token", token);
-  jwt.verify(token, process.env.KEY, (err, result) => {
-    if (err) {
-      res.status(422).send(err);
-    } else {
-      req.decoded = result;
-      console.log("result", result);
-      next();
-    }
-  });
-};
-
-GenerateToken = (data_id) => {
-  {
-    const token = jwt.sign({ data_id }, process.env.KEY); // expires in 1 hour
-    const obj = {
-      success: true,
-      message: "Token Generated Successfully!!",
-      token: token,
-    };
-    return obj;
+function authorize(roles = []) {
+  // roles param can be a single role string (e.g. Role.User or 'User')
+  // or an array of roles (e.g. [Role.Admin, Role.User] or ['Admin', 'User'])
+  if (typeof roles === "string") {
+    roles = [roles];
   }
-};
-module.exports = { auth, GenerateToken };
+
+  return [
+    // authenticate JWT token and attach user to request object (req.user)
+    jwt({ secret, algorithms: ["HS256"] }),
+
+    // authorize based on user role
+    (req, res, next) => {
+      if (roles.length && !roles.includes(req.user.role)) {
+        // user's role is not authorized
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+
+      // authentication and authorization successful
+      next();
+    },
+  ];
+}
