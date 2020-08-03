@@ -48,4 +48,20 @@ module.exports = class bookService {
       return err;
     }
   }
+  getCartById(req) {
+    try {
+      return new Promise((resolve, reject) => {
+        bookstoreModel
+          .findbyId(req)
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      });
+    } catch (err) {
+      return err;
+    }
+  }
 };

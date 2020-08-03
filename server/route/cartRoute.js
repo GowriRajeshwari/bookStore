@@ -5,7 +5,7 @@ const Role = require("../middleware/role.js");
 const authorize = require("../middleware/jwt.js");
 
 router.post("/cart/:_id", authorize.verify, usercontroller.addCart);
-// router.get("/cart/:_id", authorize.verify, usercontroller.getCartbyBookId);
+// router.get("/cart/:_id", authorize.verify, usercontroller.getCartById);
 router.get("/cart", authorize.verify, usercontroller.getAllCart);
 
 module.exports = router;

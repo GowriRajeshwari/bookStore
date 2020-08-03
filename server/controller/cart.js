@@ -16,19 +16,25 @@ module.exports.addCart = (req, res) => {
       book_id: req.params._id,
       quantity: req.body.quantity,
     };
-
+    console.log(req.decoded.data_id);
     cartService
       .addCart(filterData)
       .then((data) => {
         response.success = true;
         response.data = data;
-        response.message = "Book added Successfully";
+        response.message = "Cart added Successfully";
         res.status(200).send({ data: response });
       })
       .catch((err) => {
-        response.success = false;
-        response.message = err;
-        res.status(500).send({ data: response });
+        if (err.kind === "ObjectId") {
+          response.success = false;
+          response.message = "Book not found with id " + req.params._id;
+          res.status(404).send({ data: response });
+        } else {
+          response.success = false;
+          response.message = err;
+          res.status(500).send({ data: response });
+        }
       });
   }
 };
@@ -41,6 +47,25 @@ module.exports.getAllCart = (req, res) => {
   };
   cartService
     .getAllCart(getCarts)
+    .then((data) => {
+      response.success = true;
+      response.data = data;
+      response.message = "Retrieve Data Successfully";
+      res.status(200).send({ data: response });
+    })
+    .catch((err) => {
+      response.success = false;
+      response.error = err;
+      res.status(500).send({ data: response });
+    });
+};
+module.exports.getCartById = (req, res) => {
+  let response = {};
+  let find = {
+    user_id: req.params._id,
+  };
+  cartService
+    .getCartById(find)
     .then((data) => {
       response.success = true;
       response.data = data;
