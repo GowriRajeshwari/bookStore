@@ -1,4 +1,4 @@
-const model = require("../model/admin.js");
+const model = require("../model/cart.js");
 const { response } = require("express");
 let bookstoreModel = new model();
 module.exports = class bookService {
