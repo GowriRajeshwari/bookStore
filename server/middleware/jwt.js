@@ -15,7 +15,6 @@ const authorize = (req, res, next) => {
       if (req.decoded.role != "admin") {
         res.status(404).send({
           message: "Unauthorized user,only admin is permitted",
-          error: err,
         });
       } else {
         next();
