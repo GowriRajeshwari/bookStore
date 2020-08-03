@@ -1,6 +1,6 @@
 const Service = require("../services/cart.js");
 const cartService = new Service();
-module.exports.addBook = (req, res) => {
+module.exports.addCart = (req, res) => {
   req.checkBody("quantity", "quantity is invalid").notEmpty();
   var response = {};
   const errors = req.validationErrors();
