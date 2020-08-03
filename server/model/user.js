@@ -35,7 +35,7 @@ module.exports = class userService {
   find(req, callback) {
     registerUser.findOne(req, (err, data) => {
       if (err) {
-        return callback(err);
+        return callback(err, null);
       } else {
         return callback(null, data);
       }
@@ -52,7 +52,7 @@ module.exports = class userService {
         }
       });
     } catch (err) {
-      return callback(err);
+      return callback(err, null);
     }
   }
   updateOne(req, encrypted, callback) {
@@ -63,7 +63,7 @@ module.exports = class userService {
       encrypted,
       (err, data) => {
         if (err) {
-          return callback(err);
+          return callback(err, null);
         } else {
           return callback(null, data);
         }

@@ -1,8 +1,7 @@
 const model = require("../model/user.js");
 const emailExistance = require("email-existence");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
+const jwt = require("../middleware/jwt.js");
 var userModel = new model();
 module.exports = class Service {
   register(req, callback) {
