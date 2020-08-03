@@ -4,15 +4,17 @@ const express = require("express");
 const bodyparser = require("body-parser");
 const expressvalidator = require("express-validator");
 const app = express();
-const routes = require("./route/userRoutes.js");
-const routes = require("./route/adminRoute.js");
+const userRoutes = require("./route/userRoutes.js");
+const adminRoute = require("./route/adminRoute.js");
 require("dotenv").config();
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(expressvalidator());
-app.use("/", routes);
+app.use("/", userRoutes);
+app.use("/", adminRoute);
+
 mongoose.Promise = global.Promise;
 mongoose
   .connect(dbConfig.url, {
