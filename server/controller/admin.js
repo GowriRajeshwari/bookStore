@@ -1,4 +1,5 @@
-const adminService = require("../services/admin.js");
+const Service = require("../services/admin.js");
+const adminService = new Service();
 exports.addBook = (req, res) => {
   req
     .checkBody("title", "BookName is invalid")
@@ -60,15 +61,11 @@ exports.getAllBook = (req, res) => {
     });
 };
 exports.updateBook = (req, res) => {
-  req
-    .checkBody("title", "BookName is invalid")
-    .len({ min: 3 })
-    .isAlpha()
-    .notEmpty();
-  req.checkBody("description", "description is invalid").notEmpty();
-  req.checkBody("quantity", "quantity is invalid").notEmpty();
-  req.checkBody("author", "author is invalid").notEmpty().isAlpha();
-  req.checkBody("genre", "genre is invalid").notEmpty();
+  req.checkBody("title", "BookName is invalid").isAlpha().notEmpty() ||
+    req.checkBody("description", "description is invalid").notEmpty() ||
+    req.checkBody("quantity", "quantity is invalid").notEmpty() ||
+    req.checkBody("author", "author is invalid").notEmpty().isAlpha() ||
+    req.checkBody("genre", "genre is invalid").notEmpty();
   var response = {};
   const errors = req.validationErrors();
   if (errors) {
