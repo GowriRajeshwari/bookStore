@@ -50,6 +50,7 @@ module.exports = class model {
       return err;
     }
   }
+
   find(req) {
     try {
       return new Promise((resolve, reject) => {

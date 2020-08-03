@@ -70,6 +70,26 @@ module.exports = class model {
       return err;
     }
   }
+  findbyId(req) {
+    try {
+      return new Promise((resolve, reject) => {
+        bookStoreModel
+          .findById(req)
+          .then((data) => {
+            if (!data) {
+              resolve({ message: "Book Not found", data: data });
+            } else {
+              resolve({ message: "Book found", data: data });
+            }
+          })
+          .catch((err) => {
+            reject({ error: err });
+          });
+      });
+    } catch (err) {
+      return err;
+    }
+  }
   update(_id, req) {
     try {
       return new Promise((resolve, reject) => {

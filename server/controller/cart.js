@@ -1,5 +1,6 @@
 const Service = require("../services/cart.js");
 const cartService = new Service();
+const jwt = require("../middleware/jwt.js");
 module.exports.addCart = (req, res) => {
   req.checkBody("quantity", "quantity is invalid").notEmpty();
   var response = {};
@@ -11,11 +12,11 @@ module.exports.addCart = (req, res) => {
     res.status(422).send(response);
   } else {
     let filterData = {
-      user_id: req.body.user_id,
-      book_id: req.body.book_id,
+      user_id: req.decoded.data_id,
+      book_id: req.params._id,
       quantity: req.body.quantity,
     };
-    console.log(filterData);
+
     cartService
       .addCart(filterData)
       .then((data) => {
@@ -25,7 +26,6 @@ module.exports.addCart = (req, res) => {
         res.status(200).send({ data: response });
       })
       .catch((err) => {
-        console.log(err);
         response.success = false;
         response.message = err;
         res.status(500).send({ data: response });

@@ -33,7 +33,6 @@ exports.addBook = (req, res) => {
         res.status(200).send({ data: response });
       })
       .catch((err) => {
-        console.log(err);
         response.success = false;
         response.message = err;
         res.status(500).send({ data: response });

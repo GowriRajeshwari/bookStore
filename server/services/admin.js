@@ -40,6 +40,21 @@ module.exports = class bookService {
         });
     });
   }
+  getBookById(req) {
+    let id = {
+      _id: req.book_id,
+    };
+    return new Promise((resolve, reject) => {
+      bookstoreModel
+        .findbyId(id)
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
   updateBook(_id, req) {
     return new Promise((resolve, reject) => {
       bookstoreModel
