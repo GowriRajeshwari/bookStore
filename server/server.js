@@ -6,6 +6,7 @@ const expressvalidator = require("express-validator");
 const app = express();
 const userRoutes = require("./route/userRoutes.js");
 const adminRoute = require("./route/adminRoute.js");
+const cartRoute = require("./route/cartRoute.js");
 require("dotenv").config();
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
@@ -14,7 +15,7 @@ app.use(express.json());
 app.use(expressvalidator());
 app.use("/", userRoutes);
 app.use("/", adminRoute);
-
+app.use("/", cartRoute);
 mongoose.Promise = global.Promise;
 mongoose
   .connect(dbConfig.url, {
