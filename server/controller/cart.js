@@ -15,6 +15,7 @@ module.exports.addCart = (req, res) => {
       book_id: req.body.book_id,
       quantity: req.body.quantity,
     };
+    console.log(filterData);
     cartService
       .addCart(filterData)
       .then((data) => {
@@ -31,10 +32,12 @@ module.exports.addCart = (req, res) => {
       });
   }
 };
-exports.getAllCart = (req, res) => {
+
+module.exports.getAllCart = (req, res) => {
+  let find = {};
   let response = {};
   let getCarts = {
-    user_id: req.params._id,
+    find,
   };
   cartService
     .getAllCart(getCarts)
