@@ -67,15 +67,12 @@ module.exports = class Service {
             if (err) {
               return callback(err, null);
             } else if (encrypted) {
-              const token = jwt.sign(
-                { sub: user._id, role: user.role },
-                process.env.KEY
-              );
+              let obj = jwt.GenerateTokenUsingRole(user._id, user.role);
               response._id = user._id;
               response.fullName = user.fullName;
               response.email = user.email;
               response.role = user.role;
-              response.token = token;
+              response.token = obj.token;
               return callback(null, response);
             } else {
               return callback("Password is Incorrect");
