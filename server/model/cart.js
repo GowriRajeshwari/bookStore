@@ -34,60 +34,18 @@ exports.cartServiceModel;
 
 module.exports = class model {
   create(req) {
-    try {
-      let cartAdd = new cartServiceModel(req);
-      return new Promise((resolve, reject) => {
-        cartAdd
-          .save()
-          .then((data) => {
-            resolve(data);
-          })
-          .catch((err) => {
-            reject({ error: err });
-          });
-      });
-    } catch (err) {
-      return err;
-    }
-  }
-  findbyId(req) {
-    try {
-      return new Promise((resolve, reject) => {
-        cartServiceModel
-          .findById(req)
-          .then((data) => {
-            if (!data) {
-              resolve({ message: "User Not found", data: data });
-            } else {
-              resolve({ message: "User found", data: data });
-            }
-          })
-          .catch((err) => {
-            reject({ error: err });
-          });
-      });
-    } catch (err) {
-      return err;
-    }
+    let cartAdd = new cartServiceModel(req);
+    return cartAdd.save();
   }
   find(req) {
-    try {
-      return new Promise((resolve, reject) => {
-        cartServiceModel
-          .find(req.find)
-          .then((data) => {
-            if (data.length == 0) {
-              resolve({ message: "Book Not found", data: data });
-            } else {
-              resolve({ message: "Book found", data: data });
-            }
-          })
-          .catch((err) => {
-            reject({ error: err });
-          });
-      });
-    } catch (err) {
-      return err;
-    }
+    return cartServiceModel.find(req);
+  }
+  update(_id, req) {
+    return cartServiceModel.findByIdAndUpdate(_id, req, {
+      useFindAndModify: false,
+    });
+  }
+  delete(_id) {
+    return cartServiceModel.findByIdAndRemove(_id, { useFindAndModify: false });
   }
 };

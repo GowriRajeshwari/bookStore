@@ -16,7 +16,6 @@ module.exports.addCart = (req, res) => {
       book_id: req.params._id,
       quantity: req.body.quantity,
     };
-    console.log(req.decoded.data_id);
     cartService
       .addCart(filterData)
       .then((data) => {
@@ -39,14 +38,13 @@ module.exports.addCart = (req, res) => {
   }
 };
 
-module.exports.getAllCart = (req, res) => {
-  let find = {};
+module.exports.getCart = (req, res) => {
   let response = {};
-  let getCarts = {
-    find,
+  let find = {
+    user_id: req.decoded.data_id,
   };
   cartService
-    .getAllCart(getCarts)
+    .getCart(find)
     .then((data) => {
       response.success = true;
       response.data = data;
@@ -59,22 +57,67 @@ module.exports.getAllCart = (req, res) => {
       res.status(500).send({ data: response });
     });
 };
-module.exports.getCartById = (req, res) => {
-  let response = {};
-  let find = {
-    user_id: req.params._id,
-  };
+module.exports.updateCart = (req, res) => {
+  req.checkBody("quantity", "quantity is invalid").notEmpty();
+  var response = {};
+  const errors = req.validationErrors();
+  if (errors) {
+    response.success = false;
+    response.message = { message: "Invalid Input" };
+    response.error = errors;
+    res.status(422).send(response);
+  } else {
+    cartService
+      .updateCart(req.params._id, req.body)
+      .then((data) => {
+        if (!data) {
+          response.success = false;
+          response.message = "Book not found with id " + req.params._id;
+          res.status(404).send({ data: response });
+        } else {
+          response.success = true;
+          response.message = "Book Update Successfully";
+          res.status(200).send({ data: response });
+        }
+      })
+      .catch((err) => {
+        if (err.kind === "ObjectId") {
+          response.success = false;
+          response.message = "Book not found with id " + req.params._id;
+          res.status(404).send({ data: response });
+        } else {
+          response.success = false;
+          response.message = err;
+          res.status(500).send({ data: response });
+        }
+      });
+  }
+};
+exports.deleteCart = (req, res) => {
+  var response = {};
   cartService
-    .getCartById(find)
+    .deleteCart(req.params._id)
     .then((data) => {
-      response.success = true;
-      response.data = data;
-      response.message = "Retrieve Data Successfully";
-      res.status(200).send({ data: response });
+      if (!data) {
+        response.success = false;
+        response.message = "Book not found with id " + req.params._id;
+        res.status(404).send({ data: response });
+      } else {
+        response.success = true;
+        response.data = data;
+        response.message = "Delete Data Successfully";
+        res.status(200).send({ data: response });
+      }
     })
     .catch((err) => {
-      response.success = false;
-      response.error = err;
-      res.status(500).send({ data: response });
+      if (err.kind === "ObjectId") {
+        response.success = false;
+        response.message = "Book not found with id " + req.params._id;
+        res.status(404).send({ data: response });
+      } else {
+        response.success = false;
+        response.message = err;
+        res.status(500).send({ data: response });
+      }
     });
 };

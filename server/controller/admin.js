@@ -78,7 +78,7 @@ exports.updateBook = (req, res) => {
       .then((data) => {
         if (!data) {
           response.success = false;
-          response.message = "Note not found with id " + req.params._id;
+          response.message = "Book not found with id " + req.params._id;
           res.status(404).send({ data: response });
         } else {
           response.success = true;
@@ -89,7 +89,7 @@ exports.updateBook = (req, res) => {
       .catch((err) => {
         if (err.kind === "ObjectId") {
           response.success = false;
-          response.message = "Note not found with id " + req.params._id;
+          response.message = "Book not found with id " + req.params._id;
           res.status(404).send({ data: response });
         } else {
           response.success = false;
@@ -106,7 +106,7 @@ exports.deleteBook = (req, res) => {
     .then((data) => {
       if (!data) {
         response.success = false;
-        response.message = "Note not found with id " + req.params._id;
+        response.message = "Book not found with id " + req.params._id;
         res.status(404).send({ data: response });
       } else {
         response.success = true;
@@ -118,7 +118,7 @@ exports.deleteBook = (req, res) => {
     .catch((err) => {
       if (err.kind === "ObjectId") {
         response.success = false;
-        response.message = "Note not found with id " + req.params._id;
+        response.message = "Book not found with id " + req.params._id;
         res.status(404).send({ data: response });
       } else {
         response.success = false;
