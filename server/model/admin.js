@@ -34,92 +34,21 @@ exports.bookStoreModel;
 
 module.exports = class model {
   create(req) {
-    try {
-      let bookAdd = new bookStoreModel(req);
-      return new Promise((resolve, reject) => {
-        bookAdd
-          .save()
-          .then((data) => {
-            resolve(data);
-          })
-          .catch((err) => {
-            reject({ error: err });
-          });
-      });
-    } catch (err) {
-      return err;
-    }
+    let bookAdd = new bookStoreModel(req);
+    return bookAdd.save();
   }
   find(req) {
-    try {
-      return new Promise((resolve, reject) => {
-        bookStoreModel
-          .find(req.find)
-          .then((data) => {
-            if (data.length == 0) {
-              resolve({ message: "Book Not found", data: data });
-            } else {
-              resolve({ message: "Book found", data: data });
-            }
-          })
-          .catch((err) => {
-            reject({ error: err });
-          });
-      });
-    } catch (err) {
-      return err;
-    }
+    return bookStoreModel.find(req.find);
   }
   findbyId(req) {
-    try {
-      return new Promise((resolve, reject) => {
-        bookStoreModel
-          .findById(req)
-          .then((data) => {
-            if (!data) {
-              resolve({ message: "Book Not found", data: data });
-            } else {
-              resolve({ message: "Book found", data: data });
-            }
-          })
-          .catch((err) => {
-            reject({ error: err });
-          });
-      });
-    } catch (err) {
-      return err;
-    }
+    return bookStoreModel.findById(req);
   }
   update(_id, req) {
-    try {
-      return new Promise((resolve, reject) => {
-        bookStoreModel
-          .findByIdAndUpdate(_id, req, { useFindAndModify: false })
-          .then((data) => {
-            resolve(data);
-          })
-          .catch((err) => {
-            reject(err);
-          });
-      });
-    } catch (err) {
-      return err;
-    }
+    return bookStoreModel.findByIdAndUpdate(_id, req, {
+      useFindAndModify: false,
+    });
   }
   delete(_id) {
-    try {
-      return new Promise((resolve, reject) => {
-        bookStoreModel
-          .findByIdAndRemove(_id, { useFindAndModify: false })
-          .then((data) => {
-            resolve(data);
-          })
-          .catch((err) => {
-            reject(err);
-          });
-      });
-    } catch (err) {
-      return err;
-    }
+    return bookStoreModel.findByIdAndRemove(_id, { useFindAndModify: false });
   }
 };
