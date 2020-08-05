@@ -18,10 +18,10 @@ const cartService = mongoose.Schema(
       required: [true, "Quantity cannot be left blank"],
       default: 1,
     },
-    isOrdered: {
+    isActive: {
       type: Boolean,
       required: true,
-      default: false,
+      default: true,
     },
   },
   {
