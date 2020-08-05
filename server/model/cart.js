@@ -8,7 +8,7 @@ const cartService = mongoose.Schema(
       required: true,
       ref: "register",
     },
-    book_id: {
+    product_id: {
       type: mongoose.Types.ObjectId,
       required: true,
       ref: "book",
@@ -38,7 +38,7 @@ module.exports = class model {
     return cartAdd.save();
   }
   find(req) {
-    return cartServiceModel.find(req).populate("book_id", "title");
+    return cartServiceModel.find(req).populate("product_id", "title");
   }
   update(_id, req) {
     return cartServiceModel.findByIdAndUpdate(_id, req, {
