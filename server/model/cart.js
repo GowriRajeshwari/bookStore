@@ -38,7 +38,7 @@ module.exports = class model {
     return cartAdd.save();
   }
   find(req) {
-    return cartServiceModel.find(req);
+    return cartServiceModel.find(req).populate("book_id", "title");
   }
   update(_id, req) {
     return cartServiceModel.findByIdAndUpdate(_id, req, {
