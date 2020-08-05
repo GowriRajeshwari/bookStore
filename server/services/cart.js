@@ -9,7 +9,7 @@ module.exports = class bookService {
         adminService
           .getBookById(req)
           .then((data) => {
-            let result = data.data.quantity;
+            let result = data.quantity;
             if (result >= req.quantity) {
               cartModel
                 .create(req)
@@ -51,7 +51,7 @@ module.exports = class bookService {
     try {
       return new Promise((resolve, reject) => {
         adminService.getBookById(req).then((data) => {
-          let result = data.data.quantity;
+          let result = data.quantity;
           if (result >= req.quantity) {
             cartModel
               .update(_id, req)
