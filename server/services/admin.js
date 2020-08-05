@@ -42,7 +42,7 @@ module.exports = class bookService {
   }
   getBookById(req) {
     let id = {
-      _id: req.book_id,
+      _id: req.product_id,
     };
     return new Promise((resolve, reject) => {
       bookstoreModel

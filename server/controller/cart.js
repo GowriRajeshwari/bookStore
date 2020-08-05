@@ -13,7 +13,7 @@ module.exports.addCart = (req, res) => {
   } else {
     let filterData = {
       user_id: req.decoded.data_id,
-      book_id: req.params._id,
+      product_id: req.params._id,
       quantity: req.body.quantity,
     };
     cartService
