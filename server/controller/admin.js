@@ -1,6 +1,6 @@
 const Service = require("../services/admin.js");
 const adminService = new Service();
-exports.addBook = (req, res) => {
+module.exports.addBook = (req, res) => {
   req
     .checkBody("title", "BookName is invalid")
     .len({ min: 3 })
@@ -39,7 +39,7 @@ exports.addBook = (req, res) => {
       });
   }
 };
-exports.getAllBook = (req, res) => {
+module.exports.getAllBook = (req, res) => {
   let find = {};
   let response = {};
   let getBooks = {
@@ -59,7 +59,7 @@ exports.getAllBook = (req, res) => {
       res.status(500).send({ data: response });
     });
 };
-exports.updateBook = (req, res) => {
+module.exports.updateBook = (req, res) => {
   req.checkBody("title", "BookName is invalid").isAlpha().notEmpty() ||
     req.checkBody("description", "description is invalid").notEmpty() ||
     req.checkBody("quantity", "quantity is invalid").notEmpty() ||
@@ -99,7 +99,7 @@ exports.updateBook = (req, res) => {
       });
   }
 };
-exports.deleteBook = (req, res) => {
+module.exports.deleteBook = (req, res) => {
   var response = {};
   adminService
     .deleteBook(req.params._id)

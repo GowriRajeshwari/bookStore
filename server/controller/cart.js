@@ -93,7 +93,7 @@ module.exports.updateCart = (req, res) => {
       });
   }
 };
-exports.deleteCart = (req, res) => {
+module.exports.deleteCart = (req, res) => {
   var response = {};
   cartService
     .deleteCart(req.params._id)

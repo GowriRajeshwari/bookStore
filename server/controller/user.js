@@ -2,7 +2,7 @@ const Service = require("../services/user.js");
 var userService = new Service();
 const jwt = require("../middleware/jwt.js");
 const mailler = require("../middleware/nodeMailer.js");
-exports.registerUser = (req, res) => {
+module.exports.registerUser = (req, res) => {
   req
     .checkBody("fullName", "Name is invalid")
     .len({ min: 3 })
@@ -40,7 +40,7 @@ exports.registerUser = (req, res) => {
     });
   }
 };
-exports.loginUser = (req, res) => {
+module.exports.loginUser = (req, res) => {
   req.checkBody("email", "Email is invalid").notEmpty().isEmail();
   req.checkBody("password", "Password is invalid").notEmpty();
   var response = {};
@@ -70,7 +70,7 @@ exports.loginUser = (req, res) => {
   }
 };
 //forgot Password
-exports.forgotPassword = (req, res) => {
+module.exports.forgotPassword = (req, res) => {
   req.checkBody("email", "Email is invalid").notEmpty().isEmail();
   var response = {};
   const errors = req.validationErrors();
@@ -102,7 +102,7 @@ exports.forgotPassword = (req, res) => {
   }
 };
 //reset Password
-exports.resetPassword = (req, res) => {
+module.exports.resetPassword = (req, res) => {
   req.checkBody("password", "Password is invalid").notEmpty();
   req.checkBody("confirmPassword", "ConfirmPassword is invalid").notEmpty();
   var response = {};
