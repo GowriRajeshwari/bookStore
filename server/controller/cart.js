@@ -2,7 +2,7 @@ const Service = require("../services/cart.js");
 const cartService = new Service();
 const jwt = require("../middleware/jwt.js");
 module.exports.addCart = (req, res) => {
-  req.checkBody("quantity", "quantity is invalid").notEmpty();
+  req.checkBody("quantity", "quantity is invalid").notEmpty().isNumeric();
   var response = {};
   const errors = req.validationErrors();
   if (errors) {
@@ -58,7 +58,7 @@ module.exports.getCart = (req, res) => {
     });
 };
 module.exports.updateCart = (req, res) => {
-  req.checkBody("quantity", "quantity is invalid").notEmpty();
+  req.checkBody("quantity", "quantity is invalid").notEmpty().isNumeric();
   var response = {};
   const errors = req.validationErrors();
   if (errors) {

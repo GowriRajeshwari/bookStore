@@ -7,7 +7,7 @@ exports.addBook = (req, res) => {
     .isAlpha()
     .notEmpty();
   req.checkBody("description", "description is invalid").notEmpty();
-  req.checkBody("quantity", "quantity is invalid").notEmpty();
+  req.checkBody("quantity", "quantity is invalid").notEmpty().isNumeric();
   req.checkBody("author", "author is invalid").notEmpty().isAlpha();
   req.checkBody("genre", "genre is invalid").notEmpty();
   var response = {};
