@@ -5,6 +5,9 @@ const logger = createLogger({
     new transports.Console({
       level: "info",
     }),
+    new transports.Console({
+      level: "error",
+    }),
   ],
 });
 
