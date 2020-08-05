@@ -25,7 +25,7 @@ GenerateToken = (data_id) => {
   }
 };
 GenerateTokenUsingRole = (data_id, role) => {
-  const token = jwt.sign({ sub: data_id, role: role }, process.env.KEY);
+  const token = jwt.sign({ data_id: data_id, role: role }, process.env.KEY);
   const obj = {
     success: true,
     message: "Token Generated Successfully!!",

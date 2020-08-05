@@ -7,6 +7,7 @@ const app = express();
 const userRoutes = require("./route/userRoutes.js");
 const adminRoute = require("./route/adminRoute.js");
 const cartRoute = require("./route/cartRoute.js");
+const logger = require("./logger/logger.js");
 require("dotenv").config();
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
@@ -23,12 +24,12 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log("Connected to the Database Successfully");
-    app.listen(3000, () => {
-      console.log("server is listening on port 3000");
+    logger.log("info", "Connected to the Database Successfully");
+    app.listen(process.env.PORT, () => {
+      logger.log("info", "server is listening on port 3000");
     });
   })
   .catch((err) => {
-    console.log("Not connected to the database ", err);
+    logger.log("info", "Not connected to the database ", err);
     process.exit();
   });

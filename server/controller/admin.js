@@ -1,13 +1,13 @@
 const Service = require("../services/admin.js");
 const adminService = new Service();
-exports.addBook = (req, res) => {
+module.exports.addBook = (req, res) => {
   req
     .checkBody("title", "BookName is invalid")
     .len({ min: 3 })
     .isAlpha()
     .notEmpty();
   req.checkBody("description", "description is invalid").notEmpty();
-  req.checkBody("quantity", "quantity is invalid").notEmpty();
+  req.checkBody("quantity", "quantity is invalid").notEmpty().isNumeric();
   req.checkBody("author", "author is invalid").notEmpty().isAlpha();
   req.checkBody("genre", "genre is invalid").notEmpty();
   var response = {};
@@ -33,14 +33,13 @@ exports.addBook = (req, res) => {
         res.status(200).send({ data: response });
       })
       .catch((err) => {
-        console.log(err);
         response.success = false;
         response.message = err;
         res.status(500).send({ data: response });
       });
   }
 };
-exports.getAllBook = (req, res) => {
+module.exports.getAllBook = (req, res) => {
   let find = {};
   let response = {};
   let getBooks = {
@@ -60,7 +59,7 @@ exports.getAllBook = (req, res) => {
       res.status(500).send({ data: response });
     });
 };
-exports.updateBook = (req, res) => {
+module.exports.updateBook = (req, res) => {
   req.checkBody("title", "BookName is invalid").isAlpha().notEmpty() ||
     req.checkBody("description", "description is invalid").notEmpty() ||
     req.checkBody("quantity", "quantity is invalid").notEmpty() ||
@@ -79,7 +78,7 @@ exports.updateBook = (req, res) => {
       .then((data) => {
         if (!data) {
           response.success = false;
-          response.message = "Note not found with id " + req.params._id;
+          response.message = "Book not found with id " + req.params._id;
           res.status(404).send({ data: response });
         } else {
           response.success = true;
@@ -90,7 +89,7 @@ exports.updateBook = (req, res) => {
       .catch((err) => {
         if (err.kind === "ObjectId") {
           response.success = false;
-          response.message = "Note not found with id " + req.params._id;
+          response.message = "Book not found with id " + req.params._id;
           res.status(404).send({ data: response });
         } else {
           response.success = false;
@@ -100,14 +99,14 @@ exports.updateBook = (req, res) => {
       });
   }
 };
-exports.deleteBook = (req, res) => {
+module.exports.deleteBook = (req, res) => {
   var response = {};
   adminService
     .deleteBook(req.params._id)
     .then((data) => {
       if (!data) {
         response.success = false;
-        response.message = "Note not found with id " + req.params._id;
+        response.message = "Book not found with id " + req.params._id;
         res.status(404).send({ data: response });
       } else {
         response.success = true;
@@ -119,7 +118,7 @@ exports.deleteBook = (req, res) => {
     .catch((err) => {
       if (err.kind === "ObjectId") {
         response.success = false;
-        response.message = "Note not found with id " + req.params._id;
+        response.message = "Book not found with id " + req.params._id;
         res.status(404).send({ data: response });
       } else {
         response.success = false;

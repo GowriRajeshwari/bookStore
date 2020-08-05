@@ -1,12 +1,41 @@
 const model = require("../model/cart.js");
-const { response } = require("express");
-let bookstoreModel = new model();
+const bookService = require("../services/admin.js");
+const adminService = new bookService();
+let cartModel = new model();
 module.exports = class bookService {
   addCart(req) {
     try {
       return new Promise((resolve, reject) => {
-        bookstoreModel
-          .create(req)
+        adminService
+          .getBookById(req)
+          .then((data) => {
+            let result = data.quantity;
+            if (result >= req.quantity) {
+              cartModel
+                .create(req)
+                .then((data) => {
+                  resolve(data);
+                })
+                .catch((err) => {
+                  reject(err);
+                });
+            } else {
+              reject("OUT OF STOCK");
+            }
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      });
+    } catch (err) {
+      return err;
+    }
+  }
+  getCart(req) {
+    try {
+      return new Promise((resolve, reject) => {
+        cartModel
+          .find(req)
           .then((data) => {
             resolve(data);
           })
@@ -14,14 +43,37 @@ module.exports = class bookService {
             reject(err);
           });
       });
-    } catch {
+    } catch (err) {
       return err;
     }
   }
-  getAllCart(req) {
+  updateCart(_id, req) {
+    try {
+      return new Promise((resolve, reject) => {
+        adminService.getBookById(req).then((data) => {
+          let result = data.quantity;
+          if (result >= req.quantity) {
+            cartModel
+              .update(_id, req)
+              .then((data) => {
+                resolve(data);
+              })
+              .catch((err) => {
+                reject(err);
+              });
+          } else {
+            reject("OUT OF STOCK");
+          }
+        });
+      });
+    } catch (err) {
+      return err;
+    }
+  }
+  deleteCart(_id) {
     return new Promise((resolve, reject) => {
-      bookstoreModel
-        .find(req)
+      cartModel
+        .delete(_id)
         .then((data) => {
           resolve(data);
         })
