@@ -10,6 +10,7 @@ module.exports.addBook = (req, res) => {
   req.checkBody("quantity", "quantity is invalid").notEmpty().isNumeric();
   req.checkBody("author", "author is invalid").notEmpty().isAlpha();
   req.checkBody("genre", "genre is invalid").notEmpty();
+  req.checkBody("price", "genre is invalid").notEmpty().isNumeric();
   var response = {};
   const errors = req.validationErrors();
   if (errors) {
@@ -24,6 +25,7 @@ module.exports.addBook = (req, res) => {
       quantity: req.body.quantity,
       author: req.body.author,
       genre: req.body.genre,
+      price: req.body.price,
     };
     adminService
       .addBook(filterData)

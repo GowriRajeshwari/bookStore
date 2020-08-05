@@ -23,6 +23,10 @@ const bookService = mongoose.Schema(
       type: String,
       required: [true, "Genre cannot be left blank"],
     },
+    price: {
+      type: Number,
+      required: [true, "Price cannot be left blank"],
+    },
   },
   {
     timestamps: true,

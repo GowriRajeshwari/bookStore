@@ -11,6 +11,7 @@ module.exports = class bookService {
           quantity: req.quantity,
           author: req.author,
           genre: req.genre,
+          price: req.price,
         };
         bookstoreModel
           .create(filterData)
