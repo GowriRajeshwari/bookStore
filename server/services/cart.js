@@ -51,9 +51,7 @@ module.exports = class bookService {
     try {
       return new Promise((resolve, reject) => {
         adminService.getBookById(req).then((data) => {
-          console.log(data);
           let result = data.data.quantity;
-          console.log(result, req.quantity);
           if (result >= req.quantity) {
             cartModel
               .update(_id, req)
