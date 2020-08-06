@@ -11,13 +11,13 @@ const customerDetails = mongoose.Schema(
       type: Number,
       required: [true, "Quantity cannot be left blank"],
     },
-    phone_number: {
-      type: Number,
-      required: [true, "Quantity cannot be left blank"],
-    },
     city: {
       type: String,
       required: [true, "City must be provided"],
+    },
+    phone_number: {
+      type: Number,
+      required: [true, "phone number cannot be left blank"],
     },
     landmark: {
       type: String,
@@ -57,6 +57,6 @@ module.exports = class model {
     return cartAdd.save();
   }
   find(req) {
-    return customerDetailsModel.find(req).populate("product_id", "title");
+    return customerDetailsModel.find(req).populate("cart_id");
   }
 };

@@ -7,6 +7,7 @@ const app = express();
 const userRoutes = require("./route/userRoutes.js");
 const adminRoute = require("./route/adminRoute.js");
 const cartRoute = require("./route/cartRoute.js");
+const customerDetailRoute = require("./route/customerDetailRoute.js");
 const logger = require("./logger/logger.js");
 require("dotenv").config();
 app.use(bodyparser.urlencoded({ extended: true }));
@@ -17,6 +18,7 @@ app.use(expressvalidator());
 app.use("/", userRoutes);
 app.use("/", adminRoute);
 app.use("/", cartRoute);
+app.use("/", customerDetailRoute);
 mongoose.Promise = global.Promise;
 mongoose
   .connect(dbConfig.url, {
