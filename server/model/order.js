@@ -66,6 +66,6 @@ module.exports = class model {
     return orderDetialModel.find(req).populate("shipping_address");
   }
   findOrder(req) {
-    return orderDetialModel.find(req);
+    return orderDetialModel.find(req).populate("product_id", "title price");
   }
 };
