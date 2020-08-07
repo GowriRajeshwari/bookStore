@@ -13,18 +13,39 @@ module.exports = class bookService {
             let customerdetail = {
               user_id: req.user_id,
             };
+            let sum = 0;
+            let cartdetails = data1.filter((data1) => {
+              if (data1.isActive === true) {
+                sum = sum + data1.quantity * data1.product_id.price;
+                return data1;
+              }
+            });
             customerService
               .getCustomerById(customerdetail)
               .then((data) => {
                 let filterData = {
                   user_id: req.user_id,
-                  total_amount: req.total_amount,
+                  total_amount: sum,
                   shipping_address: data._id,
                 };
                 orderModel
-                  .create(filterData, data1)
-                  .then((data) => {
-                    resolve(data);
+                  .create(filterData)
+                  .then((data1) => {
+                    cartdetails.filter((cartdetails) => {
+                      let detail = {
+                        order_id: data1._id,
+                        product_id: cartdetails.product_id._id,
+                        quantity: cartdetails.quantity,
+                      };
+                      orderModel
+                        .createOrder(detail)
+                        .then((data) => {
+                          resolve(data1);
+                        })
+                        .catch((err) => {
+                          reject(err);
+                        });
+                    });
                   })
                   .catch((err) => {
                     reject(err);
@@ -37,15 +58,6 @@ module.exports = class bookService {
           .catch((err) => {
             reject(err);
           });
-        // cart
-        //   .addPrice(req.user_id)
-        //   .then((data) => {
-        //     console.log(data);
-        //   })
-        //   .catch((err) => {
-        //     console.log(err);
-        //     reject(err);
-        //   });
       });
     } catch (err) {
       return err;

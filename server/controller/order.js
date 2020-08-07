@@ -1,7 +1,7 @@
 const Service = require("../services/order.js");
 const orderService = new Service();
 module.exports.addOrder = (req, res) => {
-  req.checkBody("total_amount", "amount is invalid").notEmpty();
+  // req.checkBody("total_amount", "amount is invalid").notEmpty();
   var response = {};
   const errors = req.validationErrors();
   if (errors) {
@@ -12,7 +12,7 @@ module.exports.addOrder = (req, res) => {
   } else {
     let filterData = {
       user_id: req.decoded.data_id,
-      total_amount: req.body.total_amount,
+      // total_amount: req.body.total_amount,
     };
     orderService
       .addOrder(filterData)

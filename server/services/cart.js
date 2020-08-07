@@ -84,16 +84,15 @@ module.exports = class cartService {
   }
   addPrice = (req) => {
     try {
-      console.log(req);
       return new Promise((resolve, reject) => {
         cartModel
-          .sum(req)
+          .find(req)
           .then((data) => {
-            resolve(data);
+            // resolve(data);
+            console.log(data);
           })
           .catch((err) => {
             reject(err);
-            console.log("datalkjk");
           });
       });
     } catch (err) {
