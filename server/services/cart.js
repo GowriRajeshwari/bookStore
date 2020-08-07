@@ -2,7 +2,7 @@ const model = require("../model/cart.js");
 const bookService = require("../services/admin.js");
 const adminService = new bookService();
 let cartModel = new model();
-module.exports = class bookService {
+module.exports = class cartService {
   addCart(req) {
     try {
       return new Promise((resolve, reject) => {
@@ -82,4 +82,22 @@ module.exports = class bookService {
         });
     });
   }
+  addPrice = (req) => {
+    try {
+      console.log(req);
+      return new Promise((resolve, reject) => {
+        cartModel
+          .sum(req)
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err) => {
+            reject(err);
+            console.log("datalkjk");
+          });
+      });
+    } catch (err) {
+      return err;
+    }
+  };
 };

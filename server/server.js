@@ -8,6 +8,7 @@ const userRoutes = require("./route/userRoutes.js");
 const adminRoute = require("./route/adminRoute.js");
 const cartRoute = require("./route/cartRoute.js");
 const customerDetailRoute = require("./route/customerDetailRoute.js");
+const orderRoute = require("./route/orderRoute.js");
 const logger = require("./logger/logger.js");
 require("dotenv").config();
 app.use(bodyparser.urlencoded({ extended: true }));
@@ -19,6 +20,7 @@ app.use("/", userRoutes);
 app.use("/", adminRoute);
 app.use("/", cartRoute);
 app.use("/", customerDetailRoute);
+app.use("/", orderRoute);
 mongoose.Promise = global.Promise;
 mongoose
   .connect(dbConfig.url, {

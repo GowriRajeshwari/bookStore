@@ -40,7 +40,7 @@ const customerDetails = mongoose.Schema(
     user_id: {
       type: mongoose.Types.ObjectId,
       required: true,
-      ref: "cart",
+      ref: "register",
     },
   },
   {
@@ -57,6 +57,6 @@ module.exports = class model {
     return cartAdd.save();
   }
   find(req) {
-    return customerDetailsModel.find(req).populate("cart_id");
+    return customerDetailsModel.findOne(req);
   }
 };

@@ -38,7 +38,9 @@ module.exports = class model {
     return cartAdd.save();
   }
   find(req) {
-    return cartServiceModel.find(req).populate("product_id", "title");
+    return cartServiceModel
+      .find(req)
+      .populate("product_id", "title price quantity");
   }
   update(_id, req) {
     return cartServiceModel.findByIdAndUpdate(_id, req, {
@@ -47,5 +49,43 @@ module.exports = class model {
   }
   delete(_id) {
     return cartServiceModel.findByIdAndRemove(_id, { useFindAndModify: false });
+  }
+  sum(req) {
+    console.log(req);
+    let id = mongoose.Types.ObjectId(req);
+    return cartServiceModel.aggregate([
+      {
+        $match: {
+          user_id: id,
+        },
+      },
+      {
+        $group: {
+          _id: id,
+          price: {
+            $sum: {
+              $multiply: ["$price", "$quantity"],
+            },
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: "book",
+          localField: "product_id",
+          foreignField: "_id",
+          as: "price",
+        },
+      },
+      // {
+      //   $unwind: "$price",
+      // },
+      // {
+      //   $project: {
+      //     id: "$_id",
+      //     sum: "$price",
+      //   },
+      // },
+    ]);
   }
 };
