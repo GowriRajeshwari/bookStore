@@ -70,6 +70,23 @@ module.exports = class cartService {
       return err;
     }
   }
+  update(_id, req) {
+    try {
+      console.log(_id, req);
+      return new Promise((resolve, reject) => {
+        cartModel
+          .update(_id, req)
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      });
+    } catch (err) {
+      return err;
+    }
+  }
   deleteCart(_id) {
     return new Promise((resolve, reject) => {
       cartModel

@@ -41,25 +41,7 @@ const orderDetail = mongoose.Schema(
     quantity: {
       type: Number,
       required: true,
-      // ref: "cart",
     },
-    // cartDetails: [
-    //   {
-    //     // type: mongoose.Types.ObjectId,
-    //     // required: true,
-    //     // ref: "cart",
-    //     product_id: {
-    //       type: mongoose.Types.ObjectId,
-    //       required: true,
-    //       ref: "book",
-    //     },
-    //     quantity: {
-    //       type: mongoose.Types.ObjectId,
-    //       required: true,
-    //       ref: "cart",
-    //     },
-    //   },
-    // ],
   },
   {
     timestamps: true,
