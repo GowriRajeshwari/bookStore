@@ -57,6 +57,7 @@ module.exports = class bookService {
     });
   }
   updateBook(_id, req) {
+    console.log(_id, req);
     return new Promise((resolve, reject) => {
       bookstoreModel
         .update(_id, req)

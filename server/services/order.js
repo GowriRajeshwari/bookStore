@@ -22,17 +22,20 @@ module.exports = class bookService {
                 if (data1.isActive === true) {
                   sum = sum + data1.quantity * data1.product_id.price;
                   return data1;
-                } else {
-                  reject({ message: "No Product in cart" });
                 }
+                return null;
               });
-              this.addOrderDetail(customerdetail, cartdetails, sum)
-                .then((data) => {
-                  resolve(data);
-                })
-                .catch((err) => {
-                  reject(err);
-                });
+              if (cartdetails.length != 0) {
+                this.addOrderDetail(customerdetail, cartdetails, sum)
+                  .then((data) => {
+                    resolve(data);
+                  })
+                  .catch((err) => {
+                    reject(err);
+                  });
+              } else {
+                reject({ message: "No Product in cart" });
+              }
             } else {
               reject({ message: "No Product in cart" });
             }
@@ -96,7 +99,10 @@ module.exports = class bookService {
                         .updateOne(cartdetails._id, isactive)
                         .then((data) => {
                           admin
-                            .updateBook(cart.product_id._id, updatequantity)
+                            .updateBook(
+                              cartdetails.product_id._id,
+                              updatequantity
+                            )
                             .then((data) => {
                               resolve(data1);
                             })
