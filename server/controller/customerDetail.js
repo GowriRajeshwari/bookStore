@@ -1,8 +1,9 @@
 const customerServices = require("../services/customerDetail.js");
 const constantsParam = require("../constant/static.js");
+const logger = require("../logger/logger.js");
 module.exports.addAddress = (req, res) => {
-  let response = {};
   try {
+    let response = {};
     req.checkBody("name", "name should not be empty").notEmpty();
     req
       .checkBody("pincode", "pincode should not be empty")
@@ -68,12 +69,21 @@ module.exports.addAddress = (req, res) => {
         });
     }
   } catch (err) {
-    response.status = false;
-    response.error = err;
-    return res
-      .status(
-        constantsParam.staticHTTPErrorMessages.BAD_REQUEST.errorResponseCode
-      )
-      .send(response);
+    this.errorHandling(err);
+  }
+};
+
+module.exports.errorHandling = (err) => {
+  if (
+    err instanceof SyntaxError ||
+    err instanceof EvalError ||
+    err instanceof RangeError ||
+    err instanceof ReferenceError ||
+    err instanceof TypeError
+  ) {
+    logger.error("Programming Error", err);
+  } else {
+    logger.error("UserDefined", err);
+    result.message = err.message.toString();
   }
 };
