@@ -24,6 +24,7 @@ app.use("/", orderRoute);
 mongoose.Promise = global.Promise;
 mongoose
   .connect(dbConfig.url, {
+    useCreateIndex: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

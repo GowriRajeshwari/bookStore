@@ -4,6 +4,7 @@ const logger = require("../logger/logger.js");
 const orderService = new Service();
 module.exports.addOrder = (req, res) => {
   try {
+    let response = {};
     let filterData = {
       user_id: req.decoded.data_id,
     };

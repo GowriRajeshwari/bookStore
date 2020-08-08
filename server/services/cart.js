@@ -70,12 +70,11 @@ module.exports = class cartService {
       return err;
     }
   }
-  update(_id, req) {
+  updateOne(_id, req) {
     try {
-      console.log(_id, req);
       return new Promise((resolve, reject) => {
         cartModel
-          .update(_id, req)
+          .updateOne(_id, req)
           .then((data) => {
             resolve(data);
           })

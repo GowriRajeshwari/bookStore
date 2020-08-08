@@ -2,6 +2,7 @@ const model = require("../model/order.js");
 const customerService = require("../services/customerDetail.js");
 const cartService = require("../services/cart.js");
 const AdminService = require("../services/admin.js");
+const logger = require("../logger/logger.js");
 const cart = new cartService();
 const admin = new AdminService();
 let orderModel = new model();
@@ -22,7 +23,7 @@ module.exports = class bookService {
                   sum = sum + data1.quantity * data1.product_id.price;
                   return data1;
                 } else {
-                  reject({ message: "No Cart is avaliable" });
+                  reject({ message: "No Product in cart" });
                 }
               });
               this.addOrderDetail(customerdetail, cartdetails, sum)
@@ -33,7 +34,7 @@ module.exports = class bookService {
                   reject(err);
                 });
             } else {
-              reject({ message: "No Cart is avaliable" });
+              reject({ message: "No Product in cart" });
             }
           })
           .catch((err) => {
@@ -83,19 +84,34 @@ module.exports = class bookService {
                   orderModel
                     .createOrder(detail)
                     .then((data) => {
-                      resolve(data1);
+                      let isactive = {
+                        $set: { isActive: false },
+                      };
+                      let quantityStock =
+                        cartdetails.product_id.quantity - cartdetails.quantity;
+                      let updatequantity = {
+                        quantity: quantityStock,
+                      };
+                      cart
+                        .updateOne(cartdetails._id, isactive)
+                        .then((data) => {
+                          admin
+                            .updateBook(cart.product_id._id, updatequantity)
+                            .then((data) => {
+                              resolve(data1);
+                            })
+                            .catch((err) => {
+                              reject(err);
+                            });
+                        })
+                        .catch((err) => {
+                          reject(err);
+                        });
                     })
                     .catch((err) => {
                       reject(err);
                     });
                 });
-                this.update(cartdetails)
-                  .then((data) => {
-                    resolve(data1);
-                  })
-                  .catch((err) => {
-                    reject(err);
-                  });
               })
               .catch((err) => {
                 reject(err);
@@ -104,46 +120,6 @@ module.exports = class bookService {
           .catch((err) => {
             reject(err);
           });
-      });
-    } catch (err) {
-      return err;
-    }
-  }
-  update(cartdetails) {
-    try {
-      return new Promise((resolve, reject) => {
-        let cart = cartdetails;
-        cart.forEach((cart) => {
-          let isactive = {
-            isActive: false,
-          };
-          let quantityStock = cart.product_id.quantity - cart.quantity;
-          let updatequantity = {
-            quantity: quantityStock,
-          };
-          // cart
-          //   .update(cart._id, isactive)
-          //   .then((data) => {
-          //     // resolve(data);
-          //     console.log(
-          //       cart.product_id._id,
-          //       updatequantity,
-          //       cart.product_id.quantity,
-          //       cart.quantity
-          //     );
-          // admin
-          //   .updateBook(cart.product_id._id, updatequantity)
-          //   .then((data) => {
-          //     resolve(data);
-          //   })
-          //   .catch((err) => {
-          //     reject(err);
-          //   });
-          // })
-          // .catch((err) => {
-          //   reject(err);
-          // });
-        });
       });
     } catch (err) {
       return err;

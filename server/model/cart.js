@@ -47,6 +47,14 @@ module.exports = class model {
       useFindAndModify: false,
     });
   }
+  updateOne(_id, req) {
+    let id = {
+      _id: mongoose.Types.ObjectId(_id),
+    };
+    return cartServiceModel.findByIdAndUpdate(_id, req, {
+      useFindAndModify: false,
+    });
+  }
   delete(_id) {
     return cartServiceModel.findByIdAndRemove(_id, { useFindAndModify: false });
   }
