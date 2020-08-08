@@ -1,4 +1,5 @@
 const customerServices = require("../services/customerDetail.js");
+const constantsParam = require("../constant/static.js");
 module.exports.addAddress = (req, res) => {
   let response = {};
   try {
@@ -24,7 +25,11 @@ module.exports.addAddress = (req, res) => {
       response.success = false;
       response.message = { message: "Invalid Input" };
       response.error = errors;
-      res.status(422).send(response);
+      res
+        .status(
+          constantsParam.staticHTTPErrorMessages.BAD_REQUEST.errorResponseCode
+        )
+        .send(response);
     } else {
       let filterData = {
         user_id: req.decoded.data_id,
@@ -44,17 +49,31 @@ module.exports.addAddress = (req, res) => {
           response.success = true;
           response.data = data;
           response.message = "Address added Successfully";
-          res.status(200).send({ data: response });
+          res
+            .status(
+              constantsParam.staticHTTPErrorMessages.staticHTTPSuccessMessages
+                .OK.successResponseCode
+            )
+            .send({ data: response });
         })
         .catch((err) => {
           response.success = false;
           response.message = err;
-          res.status(500).send({ data: response });
+          res
+            .status(
+              constantsParam.staticHTTPErrorMessages.BAD_REQUEST
+                .errorResponseCode
+            )
+            .send({ data: response });
         });
     }
   } catch (err) {
     response.status = false;
     response.error = err;
-    return res.status(500).send(response);
+    return res
+      .status(
+        constantsParam.staticHTTPErrorMessages.BAD_REQUEST.errorResponseCode
+      )
+      .send(response);
   }
 };

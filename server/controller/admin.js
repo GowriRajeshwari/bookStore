@@ -1,4 +1,5 @@
 const Service = require("../services/admin.js");
+const constantsParam = require("../constant/static.js");
 const adminService = new Service();
 module.exports.addBook = (req, res) => {
   req
@@ -18,7 +19,11 @@ module.exports.addBook = (req, res) => {
     response.success = false;
     response.message = { message: "Invalid Input" };
     response.error = errors;
-    res.status(422).send(response);
+    res
+      .status(
+        constantsParam.staticHTTPErrorMessages.BAD_REQUEST.errorResponseCode
+      )
+      .send(response);
   } else {
     let filterData = {
       title: req.body.title,
@@ -33,12 +38,22 @@ module.exports.addBook = (req, res) => {
       .then((data) => {
         response.success = true;
         response.message = "Book added Successfully";
-        res.status(200).send({ data: response });
+        res
+          .status(
+            constantsParam.staticHTTPErrorMessages.staticHTTPSuccessMessages.OK
+              .successResponseCode
+          )
+          .send({ data: response });
       })
       .catch((err) => {
         response.success = false;
         response.message = err;
-        res.status(500).send({ data: response });
+        res
+          .status(
+            constantsParam.staticHTTPErrorMessages.INTERNAL_SERVER_ERROR
+              .errorResponseCode
+          )
+          .send({ data: response });
       });
   }
 };
@@ -54,12 +69,22 @@ module.exports.getAllBook = (req, res) => {
       response.success = true;
       response.data = data;
       response.message = "Retrieve Data Successfully";
-      res.status(200).send({ data: response });
+      res
+        .status(
+          constantsParam.staticHTTPErrorMessages.staticHTTPSuccessMessages.OK
+            .successResponseCode
+        )
+        .send({ data: response });
     })
     .catch((err) => {
       response.success = false;
       response.error = err;
-      res.status(500).send({ data: response });
+      res
+        .status(
+          constantsParam.staticHTTPErrorMessages.INTERNAL_SERVER_ERROR
+            .errorResponseCode
+        )
+        .send({ data: response });
     });
 };
 module.exports.updateBook = (req, res) => {
@@ -67,37 +92,63 @@ module.exports.updateBook = (req, res) => {
     req.checkBody("description", "description is invalid").notEmpty() ||
     req.checkBody("quantity", "quantity is invalid").notEmpty() ||
     req.checkBody("author", "author is invalid").notEmpty().isAlpha() ||
-    req.checkBody("genre", "genre is invalid").notEmpty();
+    req.checkBody("genre", "genre is invalid").notEmpty() ||
+    req.checkBody("price", "price is invalid").notEmpty().isNumeric();
+
   var response = {};
   const errors = req.validationErrors();
   if (errors) {
     response.success = false;
     response.message = { message: "Invalid Input" };
     response.error = errors;
-    res.status(422).send(response);
+    res
+      .status(
+        constantsParam.staticHTTPErrorMessages.BAD_REQUEST.errorResponseCode
+      )
+      .send(response);
   } else {
     adminService
       .updateBook(req.params._id, req.body)
       .then((data) => {
         if (!data) {
           response.success = false;
-          response.message = "Book not found with id " + req.params._id;
-          res.status(404).send({ data: response });
+          response.message = "Book not found ";
+          res
+            .status(
+              constantsParam.staticHTTPErrorMessages.BAD_REQUEST
+                .errorResponseCode
+            )
+            .send({ data: response });
         } else {
           response.success = true;
           response.message = "Book Update Successfully";
-          res.status(200).send({ data: response });
+          res
+            .status(
+              constantsParam.staticHTTPErrorMessages.staticHTTPSuccessMessages
+                .OK.successResponseCode
+            )
+            .send({ data: response });
         }
       })
       .catch((err) => {
         if (err.kind === "ObjectId") {
           response.success = false;
-          response.message = "Book not found with id " + req.params._id;
-          res.status(404).send({ data: response });
+          response.message = "Book not found ";
+          res
+            .status(
+              constantsParam.staticHTTPErrorMessages.BAD_REQUEST
+                .errorResponseCode
+            )
+            .send({ data: response });
         } else {
           response.success = false;
           response.message = err;
-          res.status(500).send({ data: response });
+          res
+            .status(
+              constantsParam.staticHTTPErrorMessages.INTERNAL_SERVER_ERROR
+                .errorResponseCode
+            )
+            .send({ data: response });
         }
       });
   }
@@ -110,23 +161,41 @@ module.exports.deleteBook = (req, res) => {
       if (!data) {
         response.success = false;
         response.message = "Book not found with id " + req.params._id;
-        res.status(404).send({ data: response });
+        res
+          .status(
+            constantsParam.staticHTTPErrorMessages.BAD_REQUEST.errorResponseCode
+          )
+          .send({ data: response });
       } else {
         response.success = true;
         response.data = data;
         response.message = "Delete Data Successfully";
-        res.status(200).send({ data: response });
+        res
+          .status(
+            constantsParam.staticHTTPErrorMessages.staticHTTPSuccessMessages.OK
+              .successResponseCode
+          )
+          .send({ data: response });
       }
     })
     .catch((err) => {
       if (err.kind === "ObjectId") {
         response.success = false;
         response.message = "Book not found with id " + req.params._id;
-        res.status(404).send({ data: response });
+        res
+          .status(
+            constantsParam.staticHTTPErrorMessages.BAD_REQUEST.errorResponseCode
+          )
+          .send({ data: response });
       } else {
         response.success = false;
         response.message = err;
-        res.status(500).send({ data: response });
+        res
+          .status(
+            constantsParam.staticHTTPErrorMessages.INTERNAL_SERVER_ERROR
+              .errorResponseCode
+          )
+          .send({ data: response });
       }
     });
 };

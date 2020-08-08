@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-//schema for registration of new user
 const orders = mongoose.Schema(
   {
     user_id: {

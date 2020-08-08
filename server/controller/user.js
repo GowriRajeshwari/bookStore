@@ -2,6 +2,7 @@ const Service = require("../services/user.js");
 var userService = new Service();
 const jwt = require("../middleware/jwt.js");
 const mailler = require("../middleware/nodeMailer.js");
+const constantsParam = require("../constant/static.js");
 module.exports.registerUser = (req, res) => {
   req
     .checkBody("fullName", "Name is invalid")
@@ -18,7 +19,11 @@ module.exports.registerUser = (req, res) => {
     response.success = false;
     response.message = { message: "Invalid Input" };
     response.error = errors;
-    res.status(422).send({ data: response });
+    res
+      .status(
+        constantsParam.staticHTTPErrorMessages.BAD_REQUEST.errorResponseCode
+      )
+      .send({ data: response });
   } else {
     let filterData = {
       fullName: req.body.fullName,
@@ -31,11 +36,20 @@ module.exports.registerUser = (req, res) => {
       if (err) {
         response.success = false;
         response.message = err;
-        res.status(404).send({ data: response });
+        res
+          .status(
+            constantsParam.staticHTTPErrorMessages.NOT_FOUND.errorResponseCode
+          )
+          .send({ data: response });
       } else {
         response.success = true;
         response.message = "Register Successfully";
-        res.status(200).send({ data: response });
+        res
+          .status(
+            constantsParam.staticHTTPErrorMessages.staticHTTPSuccessMessages.OK
+              .successResponseCode
+          )
+          .send({ data: response });
       }
     });
   }
@@ -49,7 +63,11 @@ module.exports.loginUser = (req, res) => {
     response.success = false;
     response.message = { message: "Invalid Input" };
     response.error = errors;
-    res.status(422).send({ data: response });
+    res
+      .status(
+        constantsParam.staticHTTPErrorMessages.BAD_REQUEST.errorResponseCode
+      )
+      .send({ data: response });
   } else {
     let filterData = {
       email: req.body.email,
@@ -59,17 +77,26 @@ module.exports.loginUser = (req, res) => {
       if (err) {
         response.success = false;
         response.message = err;
-        res.status(500).send({ data: response });
+        res
+          .status(
+            constantsParam.staticHTTPErrorMessages.INTERNAL_SERVER_ERROR
+              .errorResponseCode
+          )
+          .send({ data: response });
       } else {
         response.success = true;
         response.data = data;
         response.message = "Login Successfully";
-        res.status(200).send({ data: response });
+        res
+          .status(
+            constantsParam.staticHTTPErrorMessages.staticHTTPSuccessMessages.OK
+              .successResponseCode
+          )
+          .send({ data: response });
       }
     });
   }
 };
-//forgot Password
 module.exports.forgotPassword = (req, res) => {
   req.checkBody("email", "Email is invalid").notEmpty().isEmail();
   var response = {};
@@ -78,7 +105,11 @@ module.exports.forgotPassword = (req, res) => {
     response.success = false;
     response.message = { message: "Invalid Input" };
     response.error = errors;
-    res.status(422).send({ data: response });
+    res
+      .status(
+        constantsParam.staticHTTPErrorMessages.BAD_REQUEST.errorResponseCode
+      )
+      .send({ data: response });
   } else {
     let filterData = {
       email: req.body.email,
@@ -87,7 +118,12 @@ module.exports.forgotPassword = (req, res) => {
       if (err) {
         response.success = false;
         response.message = err;
-        res.status(500).send({ data: response });
+        res
+          .status(
+            constantsParam.staticHTTPErrorMessages.INTERNAL_SERVER_ERROR
+              .errorResponseCode
+          )
+          .send({ data: response });
       } else {
         let data_id = data._id;
         let obj = jwt.GenerateToken(data_id);
@@ -96,12 +132,16 @@ module.exports.forgotPassword = (req, res) => {
         response.token = obj.token;
         response.success = true;
         response.message = "Send Mail Successfully";
-        res.status(200).send({ data: response });
+        res
+          .status(
+            constantsParam.staticHTTPErrorMessages.staticHTTPSuccessMessages.OK
+              .successResponseCode
+          )
+          .send({ data: response });
       }
     });
   }
 };
-//reset Password
 module.exports.resetPassword = (req, res) => {
   req.checkBody("password", "Password is invalid").notEmpty();
   req.checkBody("confirmPassword", "ConfirmPassword is invalid").notEmpty();
@@ -111,24 +151,42 @@ module.exports.resetPassword = (req, res) => {
     response.success = false;
     response.message = { message: "Invalid Input" };
     response.error = error;
-    res.status(422).send({ data: response });
+    res
+      .status(
+        constantsParam.staticHTTPErrorMessages.BAD_REQUEST.errorResponseCode
+      )
+      .send({ data: response });
   } else if (req.body.password != req.body.confirmPassword) {
     response.success = false;
     response.message = {
       message: "Password and confirm password is not correct",
     };
-    res.status(404).send({ data: response });
+    res
+      .status(
+        constantsParam.staticHTTPErrorMessages.BAD_REQUEST.errorResponseCode
+      )
+      .send({ data: response });
   } else {
     userService.resetPassword(req, (err, data) => {
       if (err) {
         response.success = false;
         response.message = err;
-        res.status(500).send({ data: response });
+        res
+          .status(
+            constantsParam.staticHTTPErrorMessages.INTERNAL_SERVER_ERROR
+              .errorResponseCode
+          )
+          .send({ data: response });
       } else {
         response.success = true;
         response.data = data;
         response.message = "Reset Password Successfully";
-        res.status(200).send({ data: response });
+        res
+          .status(
+            constantsParam.staticHTTPErrorMessages.staticHTTPSuccessMessages.OK
+              .successResponseCode
+          )
+          .send({ data: response });
       }
     });
   }

@@ -1,7 +1,9 @@
 const model = require("../model/order.js");
 const customerService = require("../services/customerDetail.js");
 const cartService = require("../services/cart.js");
+const AdminService = require("../services/admin.js");
 const cart = new cartService();
+const admin = new AdminService();
 let orderModel = new model();
 module.exports = class bookService {
   addOrder(req) {
@@ -81,19 +83,19 @@ module.exports = class bookService {
                   orderModel
                     .createOrder(detail)
                     .then((data) => {
-                      // this.update(cartdetails)
-                      //   .then((data) => {
-                      //     resolve(data1);
-                      //   })
-                      //   .catch((err) => {
-                      //     reject(err);
-                      //   });
                       resolve(data1);
                     })
                     .catch((err) => {
                       reject(err);
                     });
                 });
+                this.update(cartdetails)
+                  .then((data) => {
+                    resolve(data1);
+                  })
+                  .catch((err) => {
+                    reject(err);
+                  });
               })
               .catch((err) => {
                 reject(err);
@@ -110,18 +112,37 @@ module.exports = class bookService {
   update(cartdetails) {
     try {
       return new Promise((resolve, reject) => {
-        cartdetails.forEach((cartdetails) => {
+        let cart = cartdetails;
+        cart.forEach((cart) => {
           let isactive = {
             isActive: false,
           };
-          cart
-            .update(cartdetails._id, isactive)
-            .then((data) => {
-              resolve(data);
-            })
-            .catch((err) => {
-              reject(err);
-            });
+          let quantityStock = cart.product_id.quantity - cart.quantity;
+          let updatequantity = {
+            quantity: quantityStock,
+          };
+          // cart
+          //   .update(cart._id, isactive)
+          //   .then((data) => {
+          //     // resolve(data);
+          //     console.log(
+          //       cart.product_id._id,
+          //       updatequantity,
+          //       cart.product_id.quantity,
+          //       cart.quantity
+          //     );
+          // admin
+          //   .updateBook(cart.product_id._id, updatequantity)
+          //   .then((data) => {
+          //     resolve(data);
+          //   })
+          //   .catch((err) => {
+          //     reject(err);
+          //   });
+          // })
+          // .catch((err) => {
+          //   reject(err);
+          // });
         });
       });
     } catch (err) {
