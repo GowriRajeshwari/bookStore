@@ -1,39 +1,31 @@
 const mongoose = require("mongoose");
 
-const orders = mongoose.Schema(
+const orderDetail = mongoose.Schema(
   {
-    user_id: {
+    order_id: {
       type: mongoose.Types.ObjectId,
       required: true,
       ref: "register",
     },
-    total_amount: {
-      type: Number,
-      required: true,
-    },
-    shipping_address: {
+    product_id: {
       type: mongoose.Types.ObjectId,
       required: true,
-      ref: "customer",
+      ref: "book",
     },
-    order_date: {
-      type: Date,
-      default: Date.now,
+    quantity: {
+      type: Number,
+      required: true,
     },
   },
   {
     timestamps: true,
   }
 );
-var ordersModel = mongoose.model("orders", orders);
-exports.ordersModel;
+
+var orderDetialModel = mongoose.model("orderDetial", orderDetail);
+exports.orderDetialModel;
 
 module.exports = class model {
-  create(req) {
-    console.log(req);
-    let orders = new ordersModel(req);
-    return orders.save();
-  }
   createOrder(req) {
     let orderDetail = new orderDetialModel(req);
     return orderDetail.save();

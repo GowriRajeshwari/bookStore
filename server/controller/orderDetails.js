@@ -1,19 +1,20 @@
-const Service = require("../services/order.js");
+const Service = require("../services/orderDetails");
 const constantsParam = require("../constant/static.js");
 const logger = require("../logger/logger.js");
 const orderService = new Service();
-module.exports.addOrder = (req, res) => {
+
+module.exports.getOrder = (req, res) => {
   try {
     let response = {};
-    let filterData = {
-      user_id: req.decoded.data_id,
+    let find = {
+      order_id: req.params._id,
     };
     orderService
-      .addOrder(filterData)
+      .getOrder(find)
       .then((data) => {
         response.success = true;
         response.data = data;
-        response.message = "Order added Successfully";
+        response.message = "Retrieve order data Successfully";
         res
           .status(
             constantsParam.staticHTTPErrorMessages.staticHTTPSuccessMessages.OK
@@ -23,7 +24,7 @@ module.exports.addOrder = (req, res) => {
       })
       .catch((err) => {
         response.success = false;
-        response.message = err;
+        response.error = err;
         res
           .status(
             constantsParam.staticHTTPErrorMessages.INTERNAL_SERVER_ERROR
@@ -35,7 +36,6 @@ module.exports.addOrder = (req, res) => {
     this.errorHandling(err);
   }
 };
-
 module.exports.errorHandling = (err) => {
   if (
     err instanceof SyntaxError ||
