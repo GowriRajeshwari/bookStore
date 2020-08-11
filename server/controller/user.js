@@ -37,12 +37,13 @@ module.exports.registerUser = (req, res) => {
       userService.register(filterData, (err, data) => {
         if (err) {
           response.success = false;
-          response.message = err;
+          response.message = "registration failed";
+          response.error = err;
           res
             .status(
               constantsParam.staticHTTPErrorMessages.NOT_FOUND.errorResponseCode
             )
-            .send({ data: response });
+            .send(response);
         } else {
           response.success = true;
           response.message = "Register Successfully";

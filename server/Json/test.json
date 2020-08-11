@@ -1,0 +1,40 @@
+{
+  "registerWrong": {
+    "fullName": "Gowri",
+    "password": "Gowri@35",
+    "email": "venkatesh@alo.in",
+    "country": "India",
+    "role": "admin"
+  },
+  "register": {
+    "fullName": "Gowri",
+    "password": "Gowri@35",
+    "email": "gowripanda35@gmail.com",
+    "country": "India",
+    "role": "user"
+  },
+  "login": {
+    "email": "gowrikanaga216@gmail.com",
+    "password": "Gowri@35"
+  },
+  "loginWrongPassword": {
+    "email": "gowrikanaga216@gmail.com",
+    "password": "Gowri@3"
+  },
+  "forgotPassword": {
+    "email": "gowrikanaga216@gmail.com"
+  },
+  "resetpassword": {
+    "password": "Gowri@35",
+    "confirmPassword": "Gowri@35"
+  },
+  "resetPasswordToken": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhX2lkIjoiNWYyNDExMTRkOGJhMzIyN2E0MTAzNmFlIiwiaWF0IjoxNTk2MjcyMDUyfQ.PKvvrzJQpNFsLOa6jO-P6avTde7kQlrX03h7TFwXcec"
+  },
+  "forgotPasswordNullData": {
+    "email": ""
+  },
+  "forgotPasswordwrongEmail": {
+    "email": "gowrikanaga216"
+  }
+}
