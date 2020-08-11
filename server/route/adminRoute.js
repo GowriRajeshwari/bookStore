@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router();
 const usercontroller = require("../controller/admin.js");
 const authorize = require("../middleware/jwt.js");
-
+// const cleanCache = require("../services/cache.js");
 router.post("/books", authorize.authorize, usercontroller.addBook);
-router.get("/books", usercontroller.getAllBook);
-router.put("/books/:_id", usercontroller.updateBook);
-router.delete("/books/:_id", usercontroller.deleteBook);
+router.get("/books", authorize.authorize, usercontroller.getAllBook);
+router.put("/books/:_id", authorize.authorize, usercontroller.updateBook);
+router.delete("/books/:_id", authorize.authorize, usercontroller.deleteBook);
 module.exports = router;

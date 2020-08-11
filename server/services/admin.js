@@ -33,6 +33,7 @@ module.exports = class bookService {
     return new Promise((resolve, reject) => {
       bookstoreModel
         .find(findQuery)
+        // .cache({ key: req.find })
         .then((data) => {
           resolve(data);
         })

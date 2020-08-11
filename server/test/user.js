@@ -58,6 +58,30 @@ describe("/login test", () => {
         done();
       });
   });
+  it(" Null Email status", (done) => {
+    let requestBody = reqBody.NullDataEmail;
+    chai
+      .request(server)
+      .post("/login")
+      .send(requestBody)
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.be.a("object");
+        done();
+      });
+  });
+  it(" Null Password status", (done) => {
+    let requestBody = reqBody.NullData;
+    chai
+      .request(server)
+      .post("/login")
+      .send(requestBody)
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.should.be.a("object");
+        done();
+      });
+  });
 });
 describe("/forgotpassword test", () => {
   it(" forgotpassword status", (done) => {
@@ -72,7 +96,7 @@ describe("/forgotpassword test", () => {
       });
   });
   it(" Null data status", (done) => {
-    let requestBody = reqBody.forgotPasswordNullData;
+    let requestBody = reqBody.NullData;
     chai
       .request(server)
       .post("/forgotPassword")

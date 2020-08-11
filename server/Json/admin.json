@@ -1,0 +1,24 @@
+{
+  "addBook": {
+    "title": "Six",
+    "description": "Six",
+    "quantity": 12,
+    "author": "bookmades",
+    "genre": "SixBook",
+    "price": 502
+  },
+  "addBookNullData": {
+    "title": "",
+    "description": "",
+    "quantity": 12,
+    "author": "",
+    "genre": "",
+    "price": 502
+  },
+  "token": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZjI3OGE3ZGMyNTFlNzNhNjAzMDYwNDYiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1OTY0Mjg5OTZ9.Nt_stxcJb1DVVBu9NCMtg2bbeNu4HdJxhEstAEojPhQ"
+  },
+  "wrongToken": {
+    "token": "eJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZjI3OGE3ZGMyNTFlNzNhNjAzMDYwNDYiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1OTY0Mjg5OTZ9.Nt_stxcJb1DVVBu9NCMtg2bbeNu4HdJxhEstAEojPhQ"
+  }
+}

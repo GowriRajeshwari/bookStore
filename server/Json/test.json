@@ -31,7 +31,11 @@
   "resetPasswordToken": {
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhX2lkIjoiNWYyNDExMTRkOGJhMzIyN2E0MTAzNmFlIiwiaWF0IjoxNTk2MjcyMDUyfQ.PKvvrzJQpNFsLOa6jO-P6avTde7kQlrX03h7TFwXcec"
   },
-  "forgotPasswordNullData": {
+  "NullData": {
+    "email": "",
+    "password": "Gowri@35"
+  },
+  "NullDataEmail": {
     "email": ""
   },
   "forgotPasswordwrongEmail": {
