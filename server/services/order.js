@@ -36,19 +36,13 @@ module.exports = class bookService {
                     reject(err);
                   });
               } else {
-                console.log("data");
-
                 reject({ message: "No Product in cart" });
               }
             } else {
-              console.log("data1");
-
               reject({ message: "No Product in cart" });
             }
           })
           .catch((err) => {
-            console.log("data1");
-
             reject(err);
           });
       });
@@ -100,28 +94,23 @@ module.exports = class bookService {
                             })
                             .catch((err) => {
                               reject(err);
-                              console.log("data1");
                             });
                         })
                         .catch((err) => {
                           reject(err);
-                          console.log("data1");
                         });
                     })
                     .catch((err) => {
                       reject(err);
-                      console.log("data1");
                     });
                 });
               })
               .catch((err) => {
                 reject(err);
-                console.log("data1");
               });
           })
           .catch((err) => {
             reject(err);
-            // console.log("data1");
           });
       });
     } catch (err) {
