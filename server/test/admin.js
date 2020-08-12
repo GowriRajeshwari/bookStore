@@ -59,3 +59,26 @@ describe("/get Books test", () => {
       });
   });
 });
+describe("/get Books test", () => {
+  it(" getAllBook status", (done) => {
+    chai
+      .request(server)
+      .get("/books")
+      .set({ Authorization: `Bearer ${reqBody.token.token}` })
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a("object");
+        done();
+      });
+  });
+  it(" Wrong token send,authorization falied status", (done) => {
+    chai
+      .request(server)
+      .get("/books")
+      .set({ Authorization: `Bearer ${reqBody.token.wrongToken}` })
+      .end((err, res) => {
+        res.should.have.status(404);
+        done();
+      });
+  });
+});

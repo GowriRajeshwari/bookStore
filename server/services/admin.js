@@ -1,10 +1,13 @@
 const model = require("../model/admin.js");
 const { response } = require("express");
+const cache = require("../services/cache.js");
 let bookstoreModel = new model();
+
 module.exports = class bookService {
   addBook(req) {
     try {
       return new Promise((resolve, reject) => {
+        const redisKey = "bookStore";
         let filterData = {
           title: req.title,
           description: req.description,
@@ -16,6 +19,14 @@ module.exports = class bookService {
         bookstoreModel
           .create(filterData)
           .then((data) => {
+            cache
+              .append(redisKey, JSON.stringify(data))
+              .then((data) => {
+                console.log("In redis book is stored");
+              })
+              .catch((err) => {
+                reject(err);
+              });
             resolve(data);
           })
           .catch((err) => {
@@ -31,11 +42,34 @@ module.exports = class bookService {
       find: req.find,
     };
     return new Promise((resolve, reject) => {
-      bookstoreModel
-        .find(findQuery)
-        // .cache({ key: req.find })
-        .then((data) => {
-          resolve(data);
+      const redisKey = "bookStore";
+      cache
+        .get(redisKey)
+        .then((result) => {
+          if (result) {
+            resolve({
+              source: "cache",
+              data: result,
+              message: "Book Get from redis successfully",
+            });
+          } else {
+            bookstoreModel
+              .find(findQuery)
+              .then((data) => {
+                // resolve(data);
+                cache
+                  .set(redisKey, JSON.stringify(data))
+                  .then((data) => {
+                    resolve({ source: "api", data: data });
+                  })
+                  .catch((err) => {
+                    reject(err);
+                  });
+              })
+              .catch((err) => {
+                reject(err);
+              });
+          }
         })
         .catch((err) => {
           reject(err);
