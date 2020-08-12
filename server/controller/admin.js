@@ -67,7 +67,8 @@ module.exports.getAllBook = (req, res) => {
     let find = {};
     let response = {};
     let getBooks = {
-      find,
+      pageNo: req.query.page,
+      limit: req.query.limit,
     };
     adminService
       .getAllBook(getBooks)

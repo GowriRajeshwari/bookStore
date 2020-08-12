@@ -26,7 +26,7 @@ module.exports = class bookService {
                 cache
                   .set(redisKey, JSON.stringify(addedData))
                   .then((data) => {
-                    console.log("In redis book is stored");
+                    logger.info("In redis book is stored");
                   })
                   .catch((err) => {
                     reject(err);
@@ -37,13 +37,12 @@ module.exports = class bookService {
                 cache
                   .set(redisKey, JSON.stringify(addedData))
                   .then((data) => {
-                    console.log("In redis book is stored");
+                    looger.info("In redis book is stored");
                   })
                   .catch((err) => {
                     reject(err);
                   });
               }
-
               resolve(data);
             })
             .catch((err) => {
@@ -56,8 +55,11 @@ module.exports = class bookService {
     }
   }
   getAllBook(req) {
+    console.log(req.pageNo, req.limit);
+    let pageNo = parseInt(req.pageNo);
+    let limit = parseInt(req.limit);
     let findQuery = {
-      find: req.find,
+      find: {},
     };
     return new Promise((resolve, reject) => {
       const redisKey = "bookStore";
@@ -66,19 +68,49 @@ module.exports = class bookService {
         .then((result) => {
           if (result) {
             const data = JSON.parse(result);
-            resolve({
-              source: "cache",
-              data: data,
-              message: "Book Get from redis successfully",
-            });
+            const startIndex = (pageNo - 1) * limit;
+            const endIndex = pageNo * limit;
+            const results = {};
+
+            if (endIndex < data.length) {
+              results.next = {
+                page: pageNo + 1,
+                limit: limit,
+              };
+            }
+            if (startIndex > 0) {
+              results.previous = {
+                page: pageNo - 1,
+                limit: limit,
+              };
+            }
+            results.data = data.slice(startIndex, endIndex);
+            resolve(results);
           } else {
             bookstoreModel
               .find(findQuery)
               .then((data) => {
+                const startIndex = (pageNo - 1) * limit;
+                const endIndex = pageNo * limit;
+                const results = {};
+
+                if (endIndex < data.length) {
+                  results.next = {
+                    page: pageNo + 1,
+                    limit: limit,
+                  };
+                }
+                if (startIndex > 0) {
+                  results.previous = {
+                    page: pageNo - 1,
+                    limit: limit,
+                  };
+                }
+                results.data = data.slice(startIndex, endIndex);
                 cache
                   .set(redisKey, JSON.stringify(data))
                   .then((data) => {
-                    resolve({ source: "api", data: data });
+                    resolve(results);
                   })
                   .catch((err) => {
                     reject(err);
@@ -136,7 +168,20 @@ module.exports = class bookService {
   }
   searchBook(req) {
     return new Promise((resolve, reject) => {
-      let searchData = {
+      var number = /^\d+$/;
+      let searchData;
+      // console.log(number.test(req));
+      // if (number.test(req)) {
+      //   searchData = {
+      //     $or: [
+      //       {
+      //         quantity: { $regex: new RegExp(parseInt(req)) },
+      //       },
+      //       { price: { $regex: new RegExp(parseInt(req)) } },
+      //     ],
+      //   };
+      // } else {
+      searchData = {
         $or: [
           {
             title: { $regex: new RegExp(req) },
@@ -148,11 +193,13 @@ module.exports = class bookService {
           },
           { genre: { $regex: new RegExp(req) } },
           // {
-          //   quantity: { $regex: new RegExp(req) },
+          //   quantity: { $regex: new RegExp("^\\d+$") },
           // },
           // { price: { $regex: new RegExp(req) } },
         ],
       };
+      // }
+
       bookstoreModel
         .search(searchData)
         .then((data) => {
