@@ -16,22 +16,40 @@ module.exports = class bookService {
           genre: req.genre,
           price: req.price,
         };
-        bookstoreModel
-          .create(filterData)
-          .then((data) => {
-            cache
-              .append(redisKey, JSON.stringify(data))
-              .then((data) => {
-                console.log("In redis book is stored");
-              })
-              .catch((err) => {
-                reject(err);
-              });
-            resolve(data);
-          })
-          .catch((err) => {
-            reject(err);
-          });
+        bookstoreModel.create(filterData).then((data) => {
+          cache
+            .get(redisKey)
+            .then((result) => {
+              if (result) {
+                const addedData = JSON.parse(result);
+                addedData.push(data);
+                cache
+                  .set(redisKey, JSON.stringify(addedData))
+                  .then((data) => {
+                    console.log("In redis book is stored");
+                  })
+                  .catch((err) => {
+                    reject(err);
+                  });
+              } else {
+                let addedData = [];
+                addedData.push(data);
+                cache
+                  .set(redisKey, JSON.stringify(addedData))
+                  .then((data) => {
+                    console.log("In redis book is stored");
+                  })
+                  .catch((err) => {
+                    reject(err);
+                  });
+              }
+
+              resolve(data);
+            })
+            .catch((err) => {
+              reject(err);
+            });
+        });
       });
     } catch {
       return err;
@@ -47,16 +65,16 @@ module.exports = class bookService {
         .get(redisKey)
         .then((result) => {
           if (result) {
+            const data = JSON.parse(result);
             resolve({
               source: "cache",
-              data: result,
+              data: data,
               message: "Book Get from redis successfully",
             });
           } else {
             bookstoreModel
               .find(findQuery)
               .then((data) => {
-                // resolve(data);
                 cache
                   .set(redisKey, JSON.stringify(data))
                   .then((data) => {
@@ -65,6 +83,7 @@ module.exports = class bookService {
                   .catch((err) => {
                     reject(err);
                   });
+                resolve(data);
               })
               .catch((err) => {
                 reject(err);
@@ -92,7 +111,6 @@ module.exports = class bookService {
     });
   }
   updateBook(_id, req) {
-    console.log(_id, req);
     return new Promise((resolve, reject) => {
       bookstoreModel
         .update(_id, req)
@@ -108,6 +126,35 @@ module.exports = class bookService {
     return new Promise((resolve, reject) => {
       bookstoreModel
         .delete(_id)
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+  searchBook(req) {
+    return new Promise((resolve, reject) => {
+      let searchData = {
+        $or: [
+          {
+            title: { $regex: new RegExp(req) },
+          },
+          { description: { $regex: new RegExp(req) } },
+
+          {
+            author: { $regex: new RegExp(req) },
+          },
+          { genre: { $regex: new RegExp(req) } },
+          // {
+          //   quantity: { $regex: new RegExp(req) },
+          // },
+          // { price: { $regex: new RegExp(req) } },
+        ],
+      };
+      bookstoreModel
+        .search(searchData)
         .then((data) => {
           resolve(data);
         })

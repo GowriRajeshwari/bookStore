@@ -218,6 +218,38 @@ module.exports.deleteBook = (req, res) => {
     this.errorHandling(err);
   }
 };
+module.exports.searchBook = (req, res) => {
+  try {
+    var response = {};
+    console.log(req.params.query);
+
+    adminService
+      .searchBook(req.params.query)
+      .then((data) => {
+        response.success = true;
+        response.data = data;
+        response.message = "search Data Successfully";
+        res
+          .status(
+            constantsParam.staticHTTPErrorMessages.staticHTTPSuccessMessages.OK
+              .successResponseCode
+          )
+          .send({ data: response });
+      })
+      .catch((err) => {
+        response.success = false;
+        response.message = err;
+        res
+          .status(
+            constantsParam.staticHTTPErrorMessages.INTERNAL_SERVER_ERROR
+              .errorResponseCode
+          )
+          .send({ data: response });
+      });
+  } catch (err) {
+    this.errorHandling(err);
+  }
+};
 module.exports.errorHandling = (err) => {
   if (
     err instanceof SyntaxError ||

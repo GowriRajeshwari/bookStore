@@ -55,4 +55,9 @@ module.exports = class model {
   delete(_id) {
     return bookStoreModel.findByIdAndRemove(_id, { useFindAndModify: false });
   }
+  search(req) {
+    console.log(req);
+
+    return bookStoreModel.find(req, { _id: 0, __v: 0 });
+  }
 };
