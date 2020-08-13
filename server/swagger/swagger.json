@@ -1,0 +1,66 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Project",
+    "description": "",
+    "version": "1.0"
+  },
+  "produces": ["application/json"],
+  "host": "localhost:3000",
+  "paths": {
+    "/register": {
+      "post": {
+        "x-swagger-router-controller": "register",
+        "operationId": "addUser",
+        "tags": ["project"],
+        "description": "Register User",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "type": "object",
+            "reguired": true,
+            "schema": {
+              "$ref": "#/definitions/register"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    }
+  },
+  "definitions": {
+    "register": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "object",
+          "properties": {
+            "fullName": {
+              "type": "String"
+            },
+            "password": {
+              "type": "String"
+            },
+            "email": {
+              "type": "String"
+            },
+            "country": {
+              "type": "String"
+            },
+            "role": {
+              "type": "String"
+            }
+          }
+        }
+      },
+      "example": {
+        "fullName": "Gowri",
+        "password": "Gowri@35",
+        "email": "gowripanda35@gmail.com",
+        "country": "India",
+        "role": "user"
+      }
+    }
+  }
+}

@@ -4,6 +4,10 @@ const express = require("express");
 const bodyparser = require("body-parser");
 const expressvalidator = require("express-validator");
 const app = express();
+
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger/swagger.json");
+
 const userRoutes = require("./route/userRoutes.js");
 const adminRoute = require("./route/adminRoute.js");
 const cartRoute = require("./route/cartRoute.js");
@@ -27,6 +31,7 @@ app.use("/", customerDetailRoute);
 app.use("/", orderRoute);
 app.use("/", orderDetailRoute);
 mongoose.Promise = global.Promise;
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(function (err, req, res, next) {
   var error = {
     status: false,

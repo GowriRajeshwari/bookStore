@@ -66,47 +66,36 @@ module.exports = class bookService {
       cache
         .get(redisKey)
         .then((result) => {
+          let data = JSON.parse(result);
           if (result) {
-            const data = JSON.parse(result);
-            const startIndex = (pageNo - 1) * limit;
-            const endIndex = pageNo * limit;
-            const results = {};
+            if (req.pageNo === undefined && req.limit === undefined) {
+              resolve(data);
+            } else {
+              this.pagination(data, pageNo, limit)
+                .then((data) => {
+                  console.log(data);
 
-            if (endIndex < data.length) {
-              results.next = {
-                page: pageNo + 1,
-                limit: limit,
-              };
+                  resolve(data);
+                })
+                .catch((err) => {
+                  reject(err);
+                });
             }
-            if (startIndex > 0) {
-              results.previous = {
-                page: pageNo - 1,
-                limit: limit,
-              };
-            }
-            results.data = data.slice(startIndex, endIndex);
-            resolve(results);
           } else {
             bookstoreModel
               .find(findQuery)
               .then((data) => {
-                const startIndex = (pageNo - 1) * limit;
-                const endIndex = pageNo * limit;
-                const results = {};
-
-                if (endIndex < data.length) {
-                  results.next = {
-                    page: pageNo + 1,
-                    limit: limit,
-                  };
+                if (req.pageNo === undefined && req.limit === undefined) {
+                  resolve(data);
+                } else {
+                  this.pagination(data, pageNo, limit)
+                    .then((data) => {
+                      resolve(data);
+                    })
+                    .catch((err) => {
+                      reject(err);
+                    });
                 }
-                if (startIndex > 0) {
-                  results.previous = {
-                    page: pageNo - 1,
-                    limit: limit,
-                  };
-                }
-                results.data = data.slice(startIndex, endIndex);
                 cache
                   .set(redisKey, JSON.stringify(data))
                   .then((data) => {
@@ -126,6 +115,26 @@ module.exports = class bookService {
           reject(err);
         });
     });
+  }
+  async pagination(data, pageNo, limit) {
+    const startIndex = (pageNo - 1) * limit;
+    const endIndex = pageNo * limit;
+    const results = {};
+
+    if (endIndex < data.length) {
+      results.next = {
+        page: pageNo + 1,
+        limit: limit,
+      };
+    }
+    if (startIndex > 0) {
+      results.previous = {
+        page: pageNo - 1,
+        limit: limit,
+      };
+    }
+    results.data = await data.slice(startIndex, endIndex);
+    return results;
   }
   getBookById(req) {
     let id = {
@@ -166,6 +175,7 @@ module.exports = class bookService {
         });
     });
   }
+
   searchBook(req) {
     return new Promise((resolve, reject) => {
       var number = /^\d+$/;
