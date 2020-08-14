@@ -143,6 +143,9 @@ module.exports.forgotPassword = (req, res) => {
           response.token = obj.token;
           response.success = true;
           response.message = "Send Mail Successfully";
+          // response.set("token" + obj.token);
+
+          // response.setHeader("Authorization", "Bearer" + response.token);
           res
             .status(
               constantsParam.staticHTTPErrorMessages.staticHTTPSuccessMessages
@@ -220,6 +223,12 @@ module.exports.errorHandling = (err) => {
     logger.error("Programming Error", err);
   } else {
     logger.error("UserDefined", err);
-    result.message = err.message.toString();
+    response.success = false;
+    response.message = err.message.toString();
+    res
+      .status(
+        constantsParam.staticHTTPErrorMessages.BAD_REQUEST.errorResponseCode
+      )
+      .send({ data: response });
   }
 };

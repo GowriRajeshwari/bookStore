@@ -25,7 +25,7 @@ module.exports.addAddress = (req, res) => {
     if (error) {
       response.success = false;
       response.message = { message: "Invalid Input" };
-      response.error = errors;
+      response.error = error;
       res
         .status(
           constantsParam.staticHTTPErrorMessages.BAD_REQUEST.errorResponseCode
@@ -74,6 +74,8 @@ module.exports.addAddress = (req, res) => {
 };
 
 module.exports.errorHandling = (err) => {
+  let response = {};
+
   if (
     err instanceof SyntaxError ||
     err instanceof EvalError ||
@@ -84,6 +86,12 @@ module.exports.errorHandling = (err) => {
     logger.error("Programming Error", err);
   } else {
     logger.error("UserDefined", err);
-    result.message = err.message.toString();
+    response.success = false;
+    response.message = err.message.toString();
+    res
+      .status(
+        constantsParam.staticHTTPErrorMessages.BAD_REQUEST.errorResponseCode
+      )
+      .send({ data: response });
   }
 };

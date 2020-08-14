@@ -224,6 +224,12 @@ module.exports.errorHandling = (err) => {
     logger.error("Programming Error", err);
   } else {
     logger.error("UserDefined", err);
-    result.message = err.message.toString();
+    response.success = false;
+    response.message = err.message.toString();
+    res
+      .status(
+        constantsParam.staticHTTPErrorMessages.BAD_REQUEST.errorResponseCode
+      )
+      .send({ data: response });
   }
 };

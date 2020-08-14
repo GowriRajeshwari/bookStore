@@ -7,7 +7,7 @@ module.exports = class bookService {
   addBook(req) {
     try {
       return new Promise((resolve, reject) => {
-        const redisKey = "bookStore";
+        const redisKey = process.env.REDISKEY;
         let filterData = {
           title: req.title,
           description: req.description,
@@ -55,14 +55,13 @@ module.exports = class bookService {
     }
   }
   getAllBook(req) {
-    console.log(req.pageNo, req.limit);
     let pageNo = parseInt(req.pageNo);
     let limit = parseInt(req.limit);
     let findQuery = {
       find: {},
     };
     return new Promise((resolve, reject) => {
-      const redisKey = "bookStore";
+      const redisKey = process.env.REDISKEY;
       cache
         .get(redisKey)
         .then((result) => {
@@ -73,8 +72,6 @@ module.exports = class bookService {
             } else {
               this.pagination(data, pageNo, limit)
                 .then((data) => {
-                  console.log(data);
-
                   resolve(data);
                 })
                 .catch((err) => {

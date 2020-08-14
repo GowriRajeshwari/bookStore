@@ -12,7 +12,7 @@
       "post": {
         "x-swagger-router-controller": "register",
         "operationId": "addUser",
-        "tags": ["project"],
+        "tags": ["registration"],
         "description": "Register User",
         "parameters": [
           {
@@ -23,6 +23,332 @@
             "schema": {
               "$ref": "#/definitions/register"
             }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/login": {
+      "post": {
+        "x-swagger-router-controller": "login",
+        "operationId": "loginUser",
+        "tags": ["login"],
+        "description": "Login User",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "type": "object",
+            "reguired": true,
+            "schema": {
+              "$ref": "#/definitions/login"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/forgotpassword": {
+      "post": {
+        "x-swagger-router-controller": "forgot password",
+        "operationId": "forgot password",
+        "tags": ["forgot password"],
+        "description": "forgot password",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "type": "object",
+            "reguired": true,
+            "schema": {
+              "$ref": "#/definitions/forgotpassword"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/resetpassword": {
+      "post": {
+        "x-swagger-router-controller": "reset password",
+        "operationId": "reset password",
+        "tags": ["reset password"],
+        "description": "reset password",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "type": "object",
+            "reguired": true,
+            "schema": {
+              "$ref": "#/definitions/resetpassword"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "reguired": true
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/books": {
+      "post": {
+        "x-swagger-router-controller": "books",
+        "tags": ["add book"],
+        "operationId": "books",
+        "description": "add a book",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "reguired": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "type": "object",
+            "reguired": true,
+            "schema": {
+              "$ref": "#/definitions/book"
+            }
+          }
+        ],
+        "responses": {}
+      },
+      "get": {
+        "x-swagger-router-controller": "books",
+        "operationId": "bookslist",
+        "tags": ["books list"],
+        "description": "get book list",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "reguired": true
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/books/{_id}": {
+      "put": {
+        "x-swagger-router-controller": "books",
+        "tags": ["update book"],
+        "operationId": "books",
+        "description": "update a book by any field",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "reguired": true
+          },
+          {
+            "name": "_id",
+            "in": "path",
+            "type": "string",
+            "reguired": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "type": "object",
+            "reguired": true,
+            "schema": {
+              "$ref": "#/definitions/updateBook"
+            }
+          }
+        ],
+        "responses": {}
+      },
+      "delete": {
+        "x-swagger-router-controller": "books",
+        "tags": ["delete book"],
+        "operationId": "books",
+        "description": "delete a book",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "reguired": true
+          },
+          {
+            "name": "_id",
+            "in": "path",
+            "type": "string",
+            "reguired": true
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/cart/{_id}": {
+      "post": {
+        "x-swagger-router-controller": "cart",
+        "tags": ["Add cart"],
+        "operationId": "cart",
+        "description": "add a cart",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "reguired": true
+          },
+          {
+            "name": "product_id",
+            "in": "path",
+            "type": "string",
+            "reguired": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "type": "object",
+            "reguired": true,
+            "schema": {
+              "$ref": "#/definitions/cart"
+            }
+          }
+        ],
+        "responses": {}
+      },
+      "put": {
+        "x-swagger-router-controller": "cart",
+        "tags": ["update cart"],
+        "operationId": "cart",
+        "description": "update a cart ",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "reguired": true
+          },
+          {
+            "name": "_id",
+            "in": "path",
+            "type": "string",
+            "reguired": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "type": "object",
+            "reguired": true,
+            "schema": {
+              "$ref": "#/definitions/updateCart"
+            }
+          }
+        ],
+        "responses": {}
+      },
+      "delete": {
+        "x-swagger-router-controller": "cart",
+        "tags": ["delete cart"],
+        "operationId": "cart",
+        "description": "delete a cart",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "reguired": true
+          },
+          {
+            "name": "_id",
+            "in": "path",
+            "type": "string",
+            "reguired": true
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/customerDetail": {
+      "post": {
+        "x-swagger-router-controller": "customerDetail",
+        "tags": ["add customerDetail"],
+        "operationId": "customerDetail",
+        "description": "add a customerDetail",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "reguired": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "type": "object",
+            "reguired": true,
+            "schema": {
+              "$ref": "#/definitions/customer"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/cart": {
+      "get": {
+        "x-swagger-router-controller": "cart",
+        "tags": ["get cart"],
+        "operationId": "getCart",
+        "description": "get cart",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "reguired": true
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/order": {
+      "post": {
+        "x-swagger-router-controller": "order",
+        "tags": ["add order"],
+        "operationId": "addOrder",
+        "description": "add order",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "reguired": true
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/order/{_id}": {
+      "get": {
+        "x-swagger-router-controller": "orderDetail",
+        "tags": ["get orderDetail"],
+        "operationId": "get orderDetail",
+        "description": "get orderDetail",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "reguired": true
+          },
+          {
+            "name": "_id",
+            "in": "path",
+            "type": "string",
+            "reguired": true
           }
         ],
         "responses": {}
@@ -60,6 +386,214 @@
         "email": "gowripanda35@gmail.com",
         "country": "India",
         "role": "user"
+      }
+    },
+    "login": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "String"
+            },
+            "password": {
+              "type": "String"
+            }
+          }
+        }
+      },
+      "example": {
+        "email": "gowrikanaga216@gmail.com",
+        "password": "Gowri@35"
+      }
+    },
+    "forgotpassword": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "String"
+            }
+          }
+        }
+      },
+      "example": {
+        "email": "gowrikanaga216@gmail.com"
+      }
+    },
+    "resetpassword": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "object",
+          "properties": {
+            "password": {
+              "type": "String"
+            },
+            "confirmPassword": {
+              "type": "String"
+            }
+          }
+        }
+      },
+      "example": {
+        "password": "Gowri@35",
+        "confirmPassword": "Gowri@35"
+      }
+    },
+    "book": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "String"
+            },
+            "description": {
+              "type": "String"
+            },
+            "quantity": {
+              "type": "Number"
+            },
+            "author": {
+              "type": "String"
+            },
+            "genre": {
+              "type": "String"
+            },
+            "price": {
+              "type": "Number"
+            }
+          }
+        }
+      },
+      "example": {
+        "title": "pipe",
+        "description": "pipeline",
+        "quantity": 12,
+        "author": "pipeline",
+        "genre": "pipeline",
+        "price": 500
+      }
+    },
+    "updateBook": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "String"
+            },
+            "description": {
+              "type": "String"
+            },
+            "quantity": {
+              "type": "Number"
+            },
+            "author": {
+              "type": "String"
+            },
+            "genre": {
+              "type": "String"
+            },
+            "price": {
+              "type": "Number"
+            }
+          }
+        }
+      },
+      "example": {
+        "title": "pipe",
+        "description": "pipeline",
+        "quantity": 12,
+        "author": "pipeline",
+        "genre": "pipeline",
+        "price": 500
+      }
+    },
+    "cart": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "object",
+          "properties": {
+            "quantity": {
+              "type": "Number"
+            }
+          }
+        }
+      },
+      "example": {
+        "quantity": 10
+      }
+    },
+    "updateCart": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "object",
+          "properties": {
+            "quantity": {
+              "type": "Number"
+            },
+            "product_id": {
+              "type": "mongoose.Types.ObjectId"
+            }
+          }
+        }
+      },
+      "example": {
+        "product_id": "5f2ce48ef99e1d217cf33313",
+        "quantity": 12
+      }
+    },
+    "customer": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "String"
+            },
+            "pincode": {
+              "type": "Number"
+            },
+            "city": {
+              "type": "String"
+            },
+            "phone_number": {
+              "type": "Number"
+            },
+            "landmark": {
+              "type": "String"
+            },
+            "state": {
+              "type": "String"
+            },
+            "address": {
+              "type": "String"
+            },
+            "address_type": {
+              "type": "String"
+            }
+          }
+        }
+      },
+      "example": {
+        "name": "gowri",
+        "pincode": 636453,
+        "city": "salem",
+        "phone_number": 6369808352,
+        "landmark": "kallipatti",
+        "state": "tamil Nadu",
+        "address": "m.kallipatii,mecheri",
+        "address_type": "home/other"
       }
     }
   }
