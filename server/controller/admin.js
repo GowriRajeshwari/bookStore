@@ -222,8 +222,6 @@ module.exports.deleteBook = (req, res) => {
 module.exports.searchBook = (req, res) => {
   try {
     var response = {};
-    console.log(req.params.query);
-
     adminService
       .searchBook(req.params.query)
       .then((data) => {
@@ -260,10 +258,13 @@ module.exports.errorHandling = (err) => {
     err instanceof TypeError
   ) {
     logger.error("Programming Error", err);
+    res
+      .status(
+        constantsParam.staticHTTPErrorMessages.BAD_REQUEST.errorResponseCode
+      )
+      .send({ data: response });
   } else {
     logger.error("UserDefined", err);
-    response.success = false;
-    response.message = err.message.toString();
     res
       .status(
         constantsParam.staticHTTPErrorMessages.BAD_REQUEST.errorResponseCode

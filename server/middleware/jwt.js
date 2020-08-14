@@ -15,7 +15,7 @@ const auth = (req, res, next) => {
 
 GenerateToken = (data_id) => {
   {
-    const token = jwt.sign({ data_id }, process.env.KEY); // expires in 1 hour
+    const token = jwt.sign({ data_id }, process.env.KEY);
     const obj = {
       success: true,
       message: "Token Generated Successfully!!",

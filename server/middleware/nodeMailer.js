@@ -1,6 +1,6 @@
 var nodemailer = require("nodemailer");
 //sending the mail to client for reset password
-exports.sendMailer = (url, email) => {
+module.exports.sendMailer = (url, email) => {
   var transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -22,8 +22,10 @@ exports.sendMailer = (url, email) => {
       res.status(404).send({
         error: err,
       });
+      return err;
     } else {
       console.log("Email sent: " + info.response);
+      return info.response;
     }
   });
 };

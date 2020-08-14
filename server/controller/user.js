@@ -138,13 +138,12 @@ module.exports.forgotPassword = (req, res) => {
         } else {
           let data_id = data._id;
           let obj = jwt.GenerateToken(data_id);
-          let url = `http://localhost:3000/resetpassword`;
+          let url = process.env.RESETPASSWORDURL;
           mailler.sendMailer(url, req.body.email);
           response.token = obj.token;
           response.success = true;
           response.message = "Send Mail Successfully";
           // response.set("token" + obj.token);
-
           // response.setHeader("Authorization", "Bearer" + response.token);
           res
             .status(
@@ -221,10 +220,13 @@ module.exports.errorHandling = (err) => {
     err instanceof TypeError
   ) {
     logger.error("Programming Error", err);
+    res
+      .status(
+        constantsParam.staticHTTPErrorMessages.BAD_REQUEST.errorResponseCode
+      )
+      .send({ data: response });
   } else {
     logger.error("UserDefined", err);
-    response.success = false;
-    response.message = err.message.toString();
     res
       .status(
         constantsParam.staticHTTPErrorMessages.BAD_REQUEST.errorResponseCode

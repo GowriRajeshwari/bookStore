@@ -135,6 +135,29 @@
         "responses": {}
       }
     },
+    "/books/{query}": {
+      "get": {
+        "x-swagger-router-controller": "books",
+        "tags": ["search book"],
+        "operationId": "books",
+        "description": "search books",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string",
+            "reguired": true
+          },
+          {
+            "name": "query",
+            "in": "path",
+            "type": "string",
+            "reguired": true
+          }
+        ],
+        "responses": {}
+      }
+    },
     "/books/{_id}": {
       "put": {
         "x-swagger-router-controller": "books",

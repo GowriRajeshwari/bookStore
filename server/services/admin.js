@@ -173,48 +173,33 @@ module.exports = class bookService {
     });
   }
 
-  searchBook(req) {
-    return new Promise((resolve, reject) => {
-      var number = /^\d+$/;
-      let searchData;
-      // console.log(number.test(req));
-      // if (number.test(req)) {
-      //   searchData = {
-      //     $or: [
-      //       {
-      //         quantity: { $regex: new RegExp(parseInt(req)) },
-      //       },
-      //       { price: { $regex: new RegExp(parseInt(req)) } },
-      //     ],
-      //   };
-      // } else {
-      searchData = {
-        $or: [
-          {
-            title: { $regex: new RegExp(req) },
-          },
-          { description: { $regex: new RegExp(req) } },
+  async searchBook(req) {
+    var number = /^\d+$/;
+    let searchData = {
+      $or: [
+        {
+          title: { $regex: new RegExp(req, "i") },
+        },
+        { description: { $regex: new RegExp(req, "i") } },
 
-          {
-            author: { $regex: new RegExp(req) },
-          },
-          { genre: { $regex: new RegExp(req) } },
-          // {
-          //   quantity: { $regex: new RegExp("^\\d+$") },
-          // },
-          // { price: { $regex: new RegExp(req) } },
-        ],
+        {
+          author: { $regex: new RegExp(req, "i") },
+        },
+        { genre: { $regex: new RegExp(req, "i") } },
+      ],
+    };
+
+    let result = await bookstoreModel.search(searchData);
+    if (result.length > 0) {
+      return {
+        message: "Book found",
+        data: result,
       };
-      // }
-
-      bookstoreModel
-        .search(searchData)
-        .then((data) => {
-          resolve(data);
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
+    } else {
+      return {
+        message: "No Book found",
+        data: result,
+      };
+    }
   }
 };
