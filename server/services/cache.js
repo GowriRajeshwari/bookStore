@@ -30,16 +30,5 @@ class cacheService {
       });
     });
   }
-  append(key, value) {
-    return new Promise((resolve, reject) => {
-      client.append(key, value, (err, result) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(result);
-        }
-      });
-    });
-  }
 }
 module.exports = new cacheService();

@@ -59,7 +59,6 @@ module.exports = class model {
     return cartServiceModel.findByIdAndRemove(_id, { useFindAndModify: false });
   }
   // sum(req) {
-  //   console.log(req);
   //   let id = mongoose.Types.ObjectId(req);
   //   return cartServiceModel.aggregate([
   //     {

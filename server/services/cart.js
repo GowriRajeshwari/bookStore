@@ -98,21 +98,4 @@ module.exports = class cartService {
         });
     });
   }
-  addPrice = (req) => {
-    try {
-      return new Promise((resolve, reject) => {
-        cartModel
-          .find(req)
-          .then((data) => {
-            // resolve(data);
-            console.log(data);
-          })
-          .catch((err) => {
-            reject(err);
-          });
-      });
-    } catch (err) {
-      return err;
-    }
-  };
 };

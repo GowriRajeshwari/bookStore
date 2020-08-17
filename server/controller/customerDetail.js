@@ -8,7 +8,8 @@ module.exports.addAddress = (req, res) => {
     req
       .checkBody("pincode", "pincode should not be empty")
       .notEmpty()
-      .isNumeric();
+      .isNumeric()
+      .len({ min: 6 });
     req
       .checkBody("phone_number", "phoneNumber should not be empty")
       .notEmpty()

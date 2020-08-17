@@ -30,7 +30,6 @@ exports.ordersModel;
 
 module.exports = class model {
   create(req) {
-    console.log(req);
     let orders = new ordersModel(req);
     return orders.save();
   }

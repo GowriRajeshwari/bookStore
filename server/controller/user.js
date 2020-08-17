@@ -139,12 +139,10 @@ module.exports.forgotPassword = (req, res) => {
           let data_id = data._id;
           let obj = jwt.GenerateToken(data_id);
           let url = process.env.RESETPASSWORDURL;
-          mailler.sendMailer(url, req.body.email);
+          mailler.sendMailer(url, req.body.email, res);
           response.token = obj.token;
           response.success = true;
           response.message = "Send Mail Successfully";
-          // response.set("token" + obj.token);
-          // response.setHeader("Authorization", "Bearer" + response.token);
           res
             .status(
               constantsParam.staticHTTPErrorMessages.staticHTTPSuccessMessages
