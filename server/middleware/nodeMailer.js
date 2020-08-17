@@ -1,4 +1,5 @@
 var nodemailer = require("nodemailer");
+const logger = require("../logger/logger.js");
 //sending the mail to client for reset password
 exports.sendMailer = (url, email, res) => {
   var transporter = nodemailer.createTransport({
@@ -23,7 +24,7 @@ exports.sendMailer = (url, email, res) => {
         error: err,
       });
     } else {
-      console.log("Email sent: " + info.response);
+      logger.log("Email sent: " + info.response);
     }
   });
 };

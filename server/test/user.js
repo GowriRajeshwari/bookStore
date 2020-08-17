@@ -88,7 +88,7 @@ describe("/forgotpassword test", () => {
     let requestBody = reqBody.forgotPassword;
     chai
       .request(server)
-      .post("/forgotPassword")
+      .post("/forgotpassword")
       .send(requestBody)
       .end((err, res) => {
         res.should.have.status(200);
@@ -99,7 +99,7 @@ describe("/forgotpassword test", () => {
     let requestBody = reqBody.NullData;
     chai
       .request(server)
-      .post("/forgotPassword")
+      .post("/forgotpassword")
       .send(requestBody)
       .end((err, res) => {
         res.should.have.status(400);
@@ -111,7 +111,7 @@ describe("/forgotpassword test", () => {
     let requestBody = reqBody.forgotPasswordwrongEmail;
     chai
       .request(server)
-      .post("/forgotPassword")
+      .post("/forgotpassword")
       .send(requestBody)
       .end((err, res) => {
         res.should.have.status(400);
@@ -124,15 +124,11 @@ describe("/forgotpassword test", () => {
 //     let requestBody = reqBody.resetPassword;
 //     chai
 //       .request(server)
-//       .post("/forgotPassword")
-//       .set("Authorization", "Bearer" + reqBody.resetPasswordToken.token)
+//       .post("/resetpassword")
+//       .set({ Authorization: `Bearer ${reqBody.resetPasswordToken.token}` })
 //       .send(requestBody)
 //       .end((err, res) => {
 //         res.should.have.status(200);
-//         // res.body.should.be.a('object');
-//         // res.body.should.have.property('errors');
-//         // res.body.errors.should.have.property('pages');
-//         // res.body.errors.pages.should.have.property('kind').eql('required');
 //         done();
 //       });
 //   });

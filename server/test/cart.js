@@ -2,7 +2,7 @@ let chai = require("chai");
 chai.should();
 let chaiHttp = require("chai-http");
 let server = require("../server.js");
-let reqBody = require("../Json/admin.json");
+let reqBody = require("../Json/cart.json");
 
 chai.use(chaiHttp);
 
@@ -36,11 +36,11 @@ describe("/New Book test", () => {
   });
 });
 
-describe("/get Books test", () => {
-  it(" getAllBook status", (done) => {
+describe("/get cart test", () => {
+  it(" getAllcart status", (done) => {
     chai
       .request(server)
-      .get("/books")
+      .get("/cart")
       .set({ Authorization: `Bearer ${reqBody.token.token}` })
       .end((err, res) => {
         res.should.have.status(200);
@@ -51,7 +51,7 @@ describe("/get Books test", () => {
   it(" Wrong token send,authorization falied status", (done) => {
     chai
       .request(server)
-      .get("/books")
+      .get("/cart")
       .set({ Authorization: `Bearer ${reqBody.token.wrongToken}` })
       .end((err, res) => {
         res.should.have.status(404);

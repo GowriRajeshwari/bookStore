@@ -1,0 +1,20 @@
+{
+  "addCart": {
+    "quantity": 12
+  },
+  "addCartNullData": {
+    "quantity": ""
+  },
+  "cartTypeError": {
+    "quantity": "ten"
+  },
+  "token": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZjI3OGE3ZGMyNTFlNzNhNjAzMDYwNDYiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1OTY0Mjg5OTZ9.Nt_stxcJb1DVVBu9NCMtg2bbeNu4HdJxhEstAEojPhQ"
+  },
+  "wrongToken": {
+    "token": "eJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZjI3OGE3ZGMyNTFlNzNhNjAzMDYwNDYiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1OTY0Mjg5OTZ9.Nt_stxcJb1DVVBu9NCMtg2bbeNu4HdJxhEstAEojPhQ"
+  },
+  "book_id": {
+    "-id": "5f2e634f26ec992028573ca2"
+  }
+}
