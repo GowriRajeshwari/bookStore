@@ -27,6 +27,9 @@ const bookService = mongoose.Schema(
       type: Number,
       required: [true, "price cannot be left blank"],
     },
+    imageUrl: {
+      type: String,
+    },
   },
   {
     timestamps: true,

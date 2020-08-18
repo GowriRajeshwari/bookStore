@@ -24,7 +24,7 @@ exports.sendMailer = (url, email, res) => {
         error: err,
       });
     } else {
-      logger.log("Email sent: " + info.response);
+      logger.log("info", "Email sent: " + info.response);
     }
   });
 };

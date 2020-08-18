@@ -4,6 +4,8 @@ const logger = require("../logger/logger.js");
 const adminService = new Service();
 module.exports.addBook = (req, res) => {
   try {
+    console.log(req.body);
+    let imageUrl = req.file.location;
     req
       .checkBody("title", "BookName is invalid")
       .len({ min: 3 })
@@ -34,6 +36,7 @@ module.exports.addBook = (req, res) => {
         author: req.body.author,
         genre: req.body.genre,
         price: req.body.price,
+        imageUrl: imageUrl,
       };
       adminService
         .addBook(filterData)
