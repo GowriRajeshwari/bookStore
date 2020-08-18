@@ -15,6 +15,7 @@ module.exports = class bookService {
           author: req.author,
           genre: req.genre,
           price: req.price,
+          imageUrl: req.imageUrl,
         };
         bookstoreModel.create(filterData).then((data) => {
           cache

@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-//schema for registration of new user
 const bookService = mongoose.Schema(
   {
     title: {

@@ -4,7 +4,6 @@ const logger = require("../logger/logger.js");
 const adminService = new Service();
 module.exports.addBook = (req, res) => {
   try {
-    console.log(req.body);
     let imageUrl = req.file.location;
     req
       .checkBody("title", "BookName is invalid")
